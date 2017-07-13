@@ -1,4 +1,6 @@
 # Registry
-Smart contract forming the FaaS registry.
 
-The deployment instructions can be read from the official SUNFISH documentations at: http://sunfish-platform-docs.readthedocs.io/
+Registry component of the SUNFISH platform
+
+
+Documentation at http://sunfish-platform-docs.readthedocs.io/
