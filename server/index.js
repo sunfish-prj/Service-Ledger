@@ -9,6 +9,12 @@ var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var serverPort = 8081;
 
+// output service configuration
+var config = require('config');
+var out_service_name = config.get('out-service.name');
+var out_service_ip = config.get('out-service.ip');
+var out_service_port = config.get('out-service.port');
+
 // swaggerRouter configuration
 var options = {
   swaggerUi: path.join(__dirname, '/swagger.json'),
@@ -19,6 +25,21 @@ var options = {
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
+
+var insertDocuments = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Insert some documents
+  collection.insertMany([
+    {a : 1}, {a : 2}, {a : 3}
+  ], function(err, result) {
+    assert.equal(err, null);
+    assert.equal(3, result.result.n);
+    assert.equal(3, result.ops.length);
+    console.log("Inserted 3 documents into the collection");
+    callback(result);
+  });
+}
 
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
@@ -37,6 +58,25 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
   // Start the server
   http.createServer(app).listen(serverPort, function () {
+    
+    if (out_service_name == 'mongo') {
+
+        var MongoClient = require('mongodb').MongoClient
+          , assert = require('assert');
+
+        // Connection URL
+        var url = 'mongodb://' + out_service_ip + ':' + out_service_port + '/sunfish-registry';
+
+        // Use connect method to connect to the server
+        MongoClient.connect(url, function(err, db) {
+          assert.equal(null, err);
+          console.log("Connected successfully to mongodb");
+          //insertDocuments(db, function() {
+             db.close();
+  	  //});
+        });
+    }
+
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
   });

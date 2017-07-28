@@ -1,0 +1,5 @@
+# output service of the registry: it can be set either to "mongo" or "fabric"
+out-service:
+   name: mongo
+   ip: localhost
+   port: 27017

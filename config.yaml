@@ -1,3 +1,0 @@
-# output service of the registry: it can be set either to "mongo" or "fabric"
-service = mongo
-service = fabric
