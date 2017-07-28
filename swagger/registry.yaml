@@ -1,0 +1,141 @@
+---
+swagger: "2.0"
+info:
+  version: "2.1.0"
+  title: "SUNFISH Registry"
+  contact:
+    name: "Federico Lombardi"
+    email: "f.lombardi@soton.ac.uk"
+
+basePath: "/r"
+
+tags:
+- name: "put"
+- name: "get"
+- name: "delete"
+
+consumes:
+- "application/json"
+produces:
+- "application/json"
+
+paths:  
+  /put:
+    post:
+      tags:
+      - "put"
+      description: "Storing a key-value pair\n"
+      operationId: "putPOST"
+      parameters:
+      - in: "body"
+        name: "putSpec"
+        description: "Body in JSON"
+        required: true
+        schema:
+          $ref: "#/definitions/put-request-body"
+      responses:
+        200:
+          description: "The response body for a successful response."
+          schema:
+            $ref: "#/definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed."
+      x-swagger-router-controller: "Put"
+  
+  /get:
+    post:
+      tags:
+      - "get"
+      description: "Retrieving a value by its key\n"
+      operationId: "getPOST"
+      parameters:
+      - in: "body"
+        name: "getId"
+        description: "Body in JSON"
+        required: true
+        schema:
+          $ref: "#/definitions/get-request-body"
+      responses:
+        200:
+          description: "The response body for a successful response."
+          schema:
+            $ref: "#/definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed."
+        404:
+          description: "The requested key is not found."
+      x-swagger-router-controller: "Get"
+  
+  /delete:
+    post:
+      tags:
+      - "delete"
+      description: "Delete a stored key\n"
+      operationId: "deletePOST"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/delete-request-body"
+      responses:
+        200:
+          description: "The response body for a successful response."
+          schema:
+            $ref: "#/definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed."
+      x-swagger-router-controller: "Delete"
+
+definitions:
+  
+  put-request-body:
+    type: "object"
+    required:
+    - "key"
+    - "value"
+    properties:
+      key:
+        type: "string"
+        description: "Identifier of the requesting entity."
+      value:
+        type: "string"
+        description: "The vaue associated to the requested key."
+    description: "HTTP body defining the input for put operations."
+  
+  get-request-body:
+    type: "object"
+    required:
+    - "key"
+    properties:
+      key:
+        type: "string"
+        description: "Identifier of the requesting entity."
+    description: "HTTP body defining the input for get operations"
+  
+  delete-request-body:
+    type: "object"
+    required:
+    - "key"
+    properties:
+      key:
+        type: "string"
+        description: "Identifier of the requesting entity."
+    description: "HTTP body defining the input for delete operations"
+
+  response:
+    type: "object"
+    required:
+    - "message"
+    properties:
+      message:
+        type: "string"
+        description: "A message signifying that the request action has been successfully\
+          \ executed"
+    description: "HTTP response for a successful store operation"
