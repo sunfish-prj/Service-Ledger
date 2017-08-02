@@ -5,6 +5,7 @@ var fs = require('fs'),
     http = require('http');
 
 var app = require('connect')();
+var assert = require('assert');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var serverPort = 8081;
@@ -26,20 +27,20 @@ var options = {
 var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
 
-var insertDocuments = function(db, callback) {
+
+var insertDocument = function(db, callback) {
   // Get the documents collection
-  var collection = db.collection('documents');
-  // Insert some documents
-  collection.insertMany([
-    {a : 1}, {a : 2}, {a : 3}
-  ], function(err, result) {
+  var collection = db.collection('keyValueStore');
+  // Insert a document
+  collection.insertOne({
+	  "a" : 1
+  }, function(err, result) {
     assert.equal(err, null);
-    assert.equal(3, result.result.n);
-    assert.equal(3, result.ops.length);
-    console.log("Inserted 3 documents into the collection");
+    console.log("Inserted document");
     callback(result);
   });
 }
+
 
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
@@ -71,9 +72,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
         MongoClient.connect(url, function(err, db) {
           assert.equal(null, err);
           console.log("Connected successfully to mongodb");
-          //insertDocuments(db, function() {
-             db.close();
-  	  //});
+          	insertDocument(db, function() {
+            db.close();
+  	  	  });
         });
     }
 
@@ -82,3 +83,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   });
 
 });
+
+
+
+
