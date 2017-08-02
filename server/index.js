@@ -13,10 +13,7 @@ var serverPort = 8081;
 // output service configuration
 var config = require('config');
 var out_service_name = config.get('out-service.name');
-var out_service_ip = config.get('out-service.ip');
-var out_service_port = config.get('out-service.port');
-var db_name= config.get('out-service.dbname');
-var db_collection = config.get('out-service.dbcollection');
+
 
 // swaggerRouter configuration
 var options = {
@@ -49,22 +46,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   http.createServer(app).listen(serverPort, function () {
     
     if (out_service_name == 'mongo') {
-
-        var MongoClient = require('mongodb').MongoClient
-          , assert = require('assert');
-
-        // Connection URL
-        var url = 'mongodb://' + out_service_ip + ':' + out_service_port + '/' + db_name;
-
-        // Use connect method to connect to the server
-        MongoClient.connect(url, function(err, db) {
-          assert.equal(null, err);
-          console.log("Connected successfully to mongodb");
-		  var myobj = { name: "Company Inc", address: "Highway 37" };
-          db_put(db, myobj, function() {
-            db.close();
-  	  	  });
-        });
+		console.log('MongoDB chosen');
     }
 
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);

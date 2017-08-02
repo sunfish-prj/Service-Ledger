@@ -1,5 +1,6 @@
 'use strict';
 
+var db_utils = require('../utils/dbUtils.js');
 
 /**
  * Storing a key-value pair 
@@ -8,16 +9,20 @@
  * returns response
  **/
 exports.putPOST = function(putSpec) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "message" : "aeiou-PUT"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
 
+    var result = {};
+
+	var ack = db_utils.db_put(putSpec);
+	
+	console.log("res: " + ack._id);
+		
+	result['application/json'] = { "message" : ack };
+
+    return new Promise(function(resolve, reject) {
+      if (Object.keys(result).length > 0) {
+        resolve(result[Object.keys(result)[0]]);
+      } else {
+        resolve();
+      }
+    });
+}

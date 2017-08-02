@@ -5,3 +5,4 @@ out-service:
    port: 27017
    dbname: sunfish-registry
    dbcollection: keyValueStore
+   
