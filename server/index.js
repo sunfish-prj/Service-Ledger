@@ -15,6 +15,8 @@ var config = require('config');
 var out_service_name = config.get('out-service.name');
 var out_service_ip = config.get('out-service.ip');
 var out_service_port = config.get('out-service.port');
+var db_name= config.get('out-service.dbname');
+var db_collection = config.get('out-service.dbcollection');
 
 // swaggerRouter configuration
 var options = {
@@ -26,20 +28,6 @@ var options = {
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
-
-
-var insertDocument = function(db, callback) {
-  // Get the documents collection
-  var collection = db.collection('keyValueStore');
-  // Insert a document
-  collection.insertOne({
-	  "a" : 1
-  }, function(err, result) {
-    assert.equal(err, null);
-    console.log("Inserted document");
-    callback(result);
-  });
-}
 
 
 // Initialize the Swagger middleware
@@ -66,13 +54,14 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
           , assert = require('assert');
 
         // Connection URL
-        var url = 'mongodb://' + out_service_ip + ':' + out_service_port + '/sunfish-registry';
+        var url = 'mongodb://' + out_service_ip + ':' + out_service_port + '/' + db_name;
 
         // Use connect method to connect to the server
         MongoClient.connect(url, function(err, db) {
           assert.equal(null, err);
           console.log("Connected successfully to mongodb");
-          	insertDocument(db, function() {
+		  var myobj = { name: "Company Inc", address: "Highway 37" };
+          db_put(db, myobj, function() {
             db.close();
   	  	  });
         });

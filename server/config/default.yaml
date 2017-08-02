@@ -3,3 +3,5 @@ out-service:
    name: mongo
    ip: localhost
    port: 27017
+   dbname: sunfish-registry
+   dbcollection: keyValueStore
