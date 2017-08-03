@@ -7,9 +7,9 @@ module.exports.deletePOST = function deletePOST (req, res, next) {
   var body = req.swagger.params['body'].value;
   Delete.deletePOST(body)
     .then(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response, 200);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response, 400);
     });
 };
