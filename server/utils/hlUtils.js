@@ -8,26 +8,31 @@ var exec = require('ssh-exec');
 
 /* Hyperledger Fabric - PUT */
 var hl_put = exports.hl_put =  function(myobj, callback) {	
-    exec('ls -lh', {
-	  user: 'ubuntu',
-	  host: 'localhost:2222',
-	  password: 'ubuntu'
-	}).pipe(process.stdout)
+	console.log('invoking ssh');    
+	_put(myobj, function(res){
+	      return callback(res);
+	  });
 }
 
-function _put (myobj, db, callback){
+function _put (myobj, callback){
 	console.log('Executing put');
-	var collection = db.collection(db_collection);
-	// Insert a document
-	collection.update({"key": myobj.key},
-		 	myobj, {upsert: true}, function(err, res){
-    	if (err) {
-			console.log(err);
-			return new Error();
-		}
-		console.log('Put succeeded');
-		return callback("ok");
-   })
+	
+	var channel = "mychannel";
+	var chaincode = "mycc";
+	var key = myobj.key;
+	var value = myobj.value;
+	var command = './hl_put.sh ' + channel + ' ' + chaincode + ' ' + key + ' ' + value;
+	console.log('command: ' + command);
+	
+	exec('ls -l', {
+	  user: 'fede',
+	  host: 'localhost',
+	  password: 'f.l.2306'
+	}).pipe(process.stdout)
+	
+	console.log('Put succeeded');
+	return callback("ok");
+
 }
 
 
