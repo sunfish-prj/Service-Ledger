@@ -8,7 +8,7 @@ var app = require('connect')();
 var assert = require('assert');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
-var serverPort = 8081;
+var serverPort = 60005;
 
 // output service configuration
 var config = require('config');
