@@ -15,7 +15,6 @@ var url = 'mongodb://' + out_service_ip + ':' + out_service_port + '/' + db_name
 var db_put = exports.db_put =  function(myobj, callback) {	
     MongoClient.connect(url, function(err, db) {
 	  assert.equal(null, err);
-	  //console.log(myobj);
       console.log("Connected successfully to mongodb");
 	  _put(myobj, db, function(res){
 	      db.close();
@@ -44,7 +43,6 @@ function _put (myobj, db, callback){
 var db_get = exports.db_get =  function(_id, callback) {	
     MongoClient.connect(url, function(err, db) {
 	  assert.equal(null, err);
-	  //console.log(myobj);
       console.log("Connected successfully to mongodb");
 	  _get(_id, db, function(res){
 	      db.close();
@@ -73,7 +71,6 @@ function _get (_id, db, callback){
 var db_delete = exports.db_delete =  function(myobj, callback) {	
     MongoClient.connect(url, function(err, db) {
 	  assert.equal(null, err);
-	  //console.log(myobj);
       console.log("Connected successfully to mongodb");
 	  _delete(myobj, db, function(res){
 	      db.close();
@@ -86,9 +83,11 @@ function _delete (myobj, db, callback){
 	console.log('Executing delete');
 	var collection = db.collection(db_collection);
 	// Insert a document
-	collection.insertOne(myobj, function(err, res){
-    	if (err) return;
-		console.log('Put succeeded ' + res.ops[0]._id);
-		return callback(res.ops[0]._id);
+	collection.deleteOne(myobj, function(err, res){
+    	if (err){
+    		return new Error();
+    	}
+		console.log('Delete succeeded');
+		return callback("ok");
    })
 }
