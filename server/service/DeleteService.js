@@ -1,5 +1,6 @@
 'use strict';
 
+var db_utils = require('../utils/dbUtils.js');
 
 /**
  * Delete a stored key 
@@ -8,16 +9,17 @@
  * returns response
  **/
 exports.deletePOST = function(body) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "message" : "aeiou"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+    var message = {};	
+    return new Promise(function(resolve, reject) {
+ 	  db_utils.db_delete(putSpec, function(res){	
+		  if (Object.keys(res).length > 0) {	
+	  		message = JSON.stringify({"message" : res});
+	  		console.log(message);
+			resolve(message);
+		  }else{
+			reject(message);
+		  }
+	  });	  
+    });
 }
 
