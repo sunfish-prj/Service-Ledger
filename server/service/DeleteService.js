@@ -11,7 +11,7 @@ var db_utils = require('../utils/dbUtils.js');
 exports.deletePOST = function(body) {
     var message = {};	
     return new Promise(function(resolve, reject) {
- 	  db_utils.db_delete(putSpec, function(res){	
+ 	  db_utils.db_delete(body, function(res){	
 		  if (Object.keys(res).length > 0) {	
 	  		message = JSON.stringify({"message" : res});
 	  		console.log(message);

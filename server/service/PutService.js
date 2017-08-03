@@ -9,7 +9,6 @@ var db_utils = require('../utils/dbUtils.js');
  * returns response
  **/
 exports.putPOST = function(putSpec) {
-
     var message = {};	
     return new Promise(function(resolve, reject) {
  	  db_utils.db_put(putSpec, function(res){	
