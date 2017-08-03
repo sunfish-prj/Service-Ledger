@@ -14,30 +14,33 @@ var db_utils = require('../utils/dbUtils.js');
  * putSpec Put-request-body Body in JSON
  * returns response
  **/
-exports.putPOST = function(putSpec) {
-    var message = {};	
-    return new Promise(function(resolve, reject) {
- 	  if (out_service_name == 'mongo') {
-		  db_utils.db_put(putSpec, function(res){	
-			  if (Object.keys(res).length > 0) {	
-		  		message = JSON.stringify({"message" : res});
-		  		console.log(message);
-				resolve(message);
-			  }else{
-				reject(message);
-			  }
-	  	});
-	  }
-	  if (out_service_name == 'fabric') {
-          	hl_utils.db_put(putSpec, function(res){	
-			  if (Object.keys(res).length > 0) {	
-		  		message = JSON.stringify({"message" : res});
-		  		console.log(message);
-				resolve(message);
-			  }else{
-				reject(message);
-			  }
-		  });
-	  }  
-    });
+exports.putPOST = function (putSpec) {
+	var message = {};
+	return new Promise(function (resolve, reject) {
+		
+		if (out_service_name == 'mongo') {
+			db_utils.db_put(putSpec, function (res) {
+				if (Object.keys(res).length > 0) {
+					message = JSON.stringify({ "message": res });
+					console.log(message);
+					resolve(message);
+				} else {
+					reject(message);
+				}
+			});
+		}
+
+		if (out_service_name == 'fabric') {
+			hl_utils.hl_put(putSpec, function (res) {
+				if (Object.keys(res).length > 0) {
+					message = JSON.stringify({ "message": res });
+					console.log(message);
+					resolve(message);
+				} else {
+					reject(message);
+				}
+			});
+		}
+
+	});
 }

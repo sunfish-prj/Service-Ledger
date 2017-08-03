@@ -5,4 +5,8 @@ out-service:
    port: 27017
    dbname: sunfish-registry
    dbcollection: keyValueStore
+   hl_user: ubuntu
+   hl_password: ubuntu
+   hl_ip: 192.168.1.107
+   hl_port: 22
    
