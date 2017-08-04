@@ -12,3 +12,4 @@ out-service:
    hl_channel: mychannel
    hl_chaincode: mycc2
    hl_dockerid: 2425a915d7c4
+   hl_script_path: /opt/gopath/src/github.com/hyperledger/fabric/examples/e2e_cli/scripts/

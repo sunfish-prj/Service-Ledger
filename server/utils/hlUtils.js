@@ -10,6 +10,7 @@ var hl_ip = config.get('out-service.hl_ip');
 var hl_channel = config.get('out-service.hl_channel');
 var hl_chaincode = config.get('out-service.hl_chaincode');
 var hl_dockerid = config.get('out-service.hl_dockerid');
+var hl_script_path = config.get('out-service.hl_script_path');
 
 /* Hyperledger Fabric - PUT */
 var hl_put = exports.hl_put =  function(myobj, callback) {	
@@ -24,7 +25,7 @@ function _put (myobj, callback){
 	
 	var key = myobj.key;
 	var value = myobj.value;
-	var command = './hl_put.sh ' + hl_channel + ' ' + hl_chaincode + ' ' + key + ' ' + value + ' ' + hl_dockerid;
+	var command = hl_script_path + 'hl_put.sh ' + hl_channel + ' ' + hl_chaincode + ' ' + key + ' ' + value + ' ' + hl_dockerid;
 	console.log('command: ' + command);
 	
 	exec('ls -l', {
