@@ -1,12 +1,19 @@
 # output service of the registry: it can be set either to "mongo" or "fabric"
 out-service:
-   name: fabric
+   name: mongo
    ip: localhost
    port: 27017
    dbname: sunfish-registry
    dbcollection: keyValueStore
-   hl_user: ubuntu
-   hl_password: ubuntu
-   hl_ip: 192.168.1.107
-   hl_port: 22
+
+#out-service:
+   #name: fabric
+   #ip: localhost
+   #port: 27017
+   #dbname: sunfish-registry
+   #dbcollection: keyValueStore
+   #hl_user: ubuntu
+   #hl_password: ubuntu
+   #hl_ip: 192.168.1.107
+   #hl_port: 22
    
