@@ -11,3 +11,4 @@ out-service:
    hl_port: 22
    hl_channel: mychannel
    hl_chaincode: mycc2
+   hl_dockerid: 2425a915d7c4
