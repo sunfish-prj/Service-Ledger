@@ -4,6 +4,9 @@ var config = require('config');
 var assert = require('assert');
 
 var exec = require('ssh-exec');
+var hl_user = config.get('out-service.hl_user');
+var hl_pass = config.get('out-service.hl_password');
+var hl_ip = config.get('out-service.hl_ip');
 
 
 /* Hyperledger Fabric - PUT */
@@ -25,9 +28,9 @@ function _put (myobj, callback){
 	console.log('command: ' + command);
 	
 	exec('ls -l', {
-	  user: 'fede',
-	  host: 'localhost',
-	  password: 'f.l.2306'
+	  user: hl_user,
+	  host: hl_ip,
+	  password: hl_pass
 	}).pipe(process.stdout)
 	
 	console.log('Put succeeded');
