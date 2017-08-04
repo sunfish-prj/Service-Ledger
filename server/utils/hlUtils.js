@@ -11,6 +11,7 @@ var hl_channel = config.get('out-service.hl_channel');
 var hl_chaincode = config.get('out-service.hl_chaincode');
 var hl_dockerid = config.get('out-service.hl_dockerid');
 var hl_script_path = config.get('out-service.hl_script_path');
+var hl_endorser_peer = config.get('out-service.hl_endorser_peer');
 
 /* Hyperledger Fabric - PUT */
 var hl_put = exports.hl_put =  function(myobj, callback) {	
@@ -25,9 +26,10 @@ function _put (myobj, callback){
 	
 	var key = myobj.key;
 	var value = myobj.value;
-	var command = hl_script_path + 'hl_put.sh ' + hl_channel + ' ' + hl_chaincode + ' ' + key + ' ' + value + ' ' + hl_dockerid;
+	var command = hl_script_path + 'hl_put.sh ' +' '+ hl_endorser_peer +' '+ hl_channel +' '+ hl_chaincode +' '+ key +' '+ value +' '+ hl_dockerid;
 	console.log('command: ' + command);
 	
+	// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d826131
 	exec(command, {
 	  user: hl_user,
 	  host: hl_ip,
