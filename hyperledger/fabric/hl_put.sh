@@ -1,10 +1,11 @@
 #!/bin/bash
-CHANNEL=$1
-CHAINCODE_NAME=$2
-KEY=$3
-VALUE=$4
-DOCKER_ID=$5
+PEER=$1
+CHANNEL=$2
+CHAINCODE_NAME=$3
+KEY=$4
+VALUE=$5
+DOCKER_ID=$6
 
-docker exec $DOCKER_ID /bin/sh -c "/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/set-peer.sh 0 && /opt/gopath/src/github.com/hyperledger/fabric/peer/peer chaincode invoke -o orderer0:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL -n $CHAINCODE_NAME -c '{"Args":["put","$KEY","$VALUE"]}'"
+docker exec $DOCKER_ID /bin/bash -c ". /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/put.sh $PEER $CHANNEL $CHAINCODE_NAME $KEY $VALUE $DOCKER_ID"
 
 exit 0

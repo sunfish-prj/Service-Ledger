@@ -10,6 +10,7 @@ out-service:
    hl_ip: 192.168.1.107
    hl_port: 22
    hl_channel: mychannel
-   hl_chaincode: mycc2
-   hl_dockerid: 2425a915d7c4
+   hl_chaincode: keyValueStore
+   hl_dockerid: 1db78d826131
    hl_script_path: /opt/gopath/src/github.com/hyperledger/fabric/examples/e2e_cli/scripts/
+   hl_endorser_peer: 0
