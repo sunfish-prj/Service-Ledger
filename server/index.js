@@ -48,6 +48,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     if (out_service_name == 'mongo') {
 		console.log('MongoDB chosen');
     }
+    if (out_service_name == 'fabric') {
+		console.log('Hyperledger Fabric chosen');
+    }
 
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
