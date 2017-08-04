@@ -28,7 +28,7 @@ function _put (myobj, callback){
 	var command = hl_script_path + 'hl_put.sh ' + hl_channel + ' ' + hl_chaincode + ' ' + key + ' ' + value + ' ' + hl_dockerid;
 	console.log('command: ' + command);
 	
-	exec('ls -l', {
+	exec(command, {
 	  user: hl_user,
 	  host: hl_ip,
 	  password: hl_pass
