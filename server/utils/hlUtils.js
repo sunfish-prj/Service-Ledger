@@ -7,7 +7,8 @@ var exec = require('ssh-exec');
 var hl_user = config.get('out-service.hl_user');
 var hl_pass = config.get('out-service.hl_password');
 var hl_ip = config.get('out-service.hl_ip');
-
+var hl_channel = config.get('out-service.hl_channel');
+var hl_chaincode = config.get('out-service.hl_chaincode');
 
 /* Hyperledger Fabric - PUT */
 var hl_put = exports.hl_put =  function(myobj, callback) {	
@@ -20,11 +21,9 @@ var hl_put = exports.hl_put =  function(myobj, callback) {
 function _put (myobj, callback){
 	console.log('Executing put');
 	
-	var channel = "mychannel";
-	var chaincode = "mycc";
 	var key = myobj.key;
 	var value = myobj.value;
-	var command = './hl_put.sh ' + channel + ' ' + chaincode + ' ' + key + ' ' + value;
+	var command = './hl_put.sh ' + hl_channel + ' ' + hl_chaincode + ' ' + key + ' ' + value;
 	console.log('command: ' + command);
 	
 	exec('ls -l', {

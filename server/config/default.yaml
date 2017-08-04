@@ -10,4 +10,4 @@ out-service:
    hl_ip: 192.168.1.107
    hl_port: 22
    hl_channel: mychannel
-   hl_chaincode: keyValueStore
+   hl_chaincode: mycc2
