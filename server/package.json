@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm install",
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "keywords": [
     "swagger"
@@ -13,9 +13,12 @@
   "license": "Unlicense",
   "private": true,
   "dependencies": {
+    "config": "^1.26.1",
     "connect": "^3.2.0",
     "js-yaml": "^3.3.0",
     "mongodb": "^2.2.30",
+    "nodemon": "^1.11.0",
+    "ssh-exec": "^2.0.0",
     "swagger-tools": "0.10.1"
   }
 }
