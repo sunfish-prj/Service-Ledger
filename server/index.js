@@ -8,12 +8,12 @@ var app = require('connect')();
 var assert = require('assert');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
-var serverPort = 60005;
 
 // output service configuration
 var config = require('config');
 var out_service_name = config.get('out-service.name');
-
+var serverHost = config.get('server').host;
+var serverPort = config.get('server').port;
 
 // swaggerRouter configuration
 var options = {
