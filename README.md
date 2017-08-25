@@ -6,7 +6,7 @@ This respository contains the Node.js files implementing a REST *server acting a
 
 The server has been currently configured for the blockchain system [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/) v1.0.0. Its installation and deployment instruction can be found in the guide. Wheras, the smart contracts to deployed, which actually implement the functionality of the infrastructure, are instead available in the repository. 
 
-For testing purpose, part of the infrastructure functionality are also implemented via [MongoDB](https://www.mongodb.com/en). Clearly, it only implements functionality related to management of data, not computational one. This option is chosen in the *config.yaml* file.
+For testing purpose, part of the infrastructure functionality are also implemented via [MongoDB](https://www.mongodb.com/en). Clearly, it only implements functionality related to management of data, not computational one. This option is chosen in the configuration file *config/default.yaml*.
 
 Full documentation is reported in the official [SUNFISH Manual](http://sunfish-platform-docs.readthedocs.io/)
 
@@ -46,7 +46,7 @@ To set the service, execute the following commands
 ```
 In case the server is using MongoDB, you should also start it. See the corresponding command wrt your os [here](https://docs.mongodb.com/manual/administration/install-community/)
 
-The server is now running and listening on the port chosen in the config.yaml file (e.g. 60005). You can use the [client-stub interface] (http://localhost:60005/docs).  
+The server is now running and listening on the port chosen in the *config/default.yaml*. file (e.g. 60005). You can use the [client-stub interface] (http://localhost:60005/docs).  
 
 ### Server test
 
