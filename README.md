@@ -46,5 +46,5 @@ To set the service, execute the following commands
 ```
 In case the server is using MongoDB, you should also start it. See the corresponding command wrt your os [here](https://docs.mongodb.com/manual/administration/install-community/)
 
-The server is now running and listening on the port chosen in the config.yaml file (e.g. 60005). You can use the client-stub interface [http://localhost:60005/docs].  
+The server is now running and listening on the port chosen in the config.yaml file (e.g. 60005). You can use the [client-stub interface] (http://localhost:60005/docs).  
 
