@@ -48,3 +48,11 @@ In case the server is using MongoDB, you should also start it. See the correspon
 
 The server is now running and listening on the port chosen in the config.yaml file (e.g. 60005). You can use the [client-stub interface] (http://localhost:60005/docs).  
 
+### Server test
+
+To test the server API, there are available in the *test-client/* folder bash files with *curl* corresponding commands; url and port must be given as input, e.g. 
+```
+  $ ./kvStore.sh localhost 60005
+```
+
+
