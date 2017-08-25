@@ -15,12 +15,12 @@ Full documentation is reported in the official [SUNFISH Manual](http://sunfish-p
 ### Dependencies 
 
 Install the dependencies 
-- Node.js v6.x
-- Npm v3.x
+- *Node.js v6.x*
+- *Npm v3.x*
 Releases and installation guides can be found on the official web-sites [here](https://nodejs.org) and [here](https://www.npmjs.com/) 
 
 In case the MongoDB back-end in used, install the dependency
-- MongoDB v3.x  
+- *MongoDB v3.x* 
 Releases and installation guides can be found on the official web-site [here](https://www.mongodb.com/). 
 
 To check that all the depencies have been set up, execute
@@ -36,6 +36,15 @@ The name of the command *node* can change wrt the os, refer to the official guid
   -> MongoDB shell version v3.4.6
 ```  
 
-### Set-up
+### Server set-up
 
+To set the service, execute the following commands
+``` 
+  $ git clone https://github.com/sunfish-prj/Registry.git
+  $ cd Registry/server
+  $ npm start
+```
+In case the server is using MongoDB, you should also start it. See the corresponding command wrt your os [here](https://docs.mongodb.com/manual/administration/install-community/)
+
+The server is now running and listening on the port chosen in the config.yaml file (e.g. 60005). You can use the client-stub interface [http://localhost:60005/docs].  
 
