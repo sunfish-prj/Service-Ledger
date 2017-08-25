@@ -6,11 +6,36 @@ This respository contains the Node.js files implementing a REST *server acting a
 
 The server has been currently configured for the blockchain system [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/) v1.0.0. Its installation and deployment instruction can be found in the guide. Wheras, the smart contracts to deployed, which actually implement the functionality of the infrastructure, are instead available in the repository. 
 
-For testing purpose, part of the infrastructure functionality are also implemented via [MongoDB](https://www.mongodb.com/en). Clearly, it only implements functionality related to management of data, not computational one. 
+For testing purpose, part of the infrastructure functionality are also implemented via [MongoDB](https://www.mongodb.com/en). Clearly, it only implements functionality related to management of data, not computational one. This option is chosen in the *config.yaml* file.
 
 Full documentation is reported in the official [SUNFISH Manual](http://sunfish-platform-docs.readthedocs.io/)
 
 ## Installation Guide
 
+### Dependencies 
+
+Install the dependencies 
+- Node.js v6.x
+- Npm v3.x
+Releases and installation guides can be found on the official web-sites [here](https://nodejs.org) and [here](https://www.npmjs.com/) 
+
+In case the MongoDB back-end in used, install the dependency
+- MongoDB v3.x  
+Releases and installation guides can be found on the official web-site [here](https://www.mongodb.com/). 
+
+To check that all the depencies have been set up, execute
+```
+  $ node -v
+  -> v6.1.0
+  $ npm -v
+  -> 3.10.6
+```
+The name of the command *node* can change wrt the os, refer to the official guide. In case of using Mongo, execute
+```
+  $ mongo --version
+  -> MongoDB shell version v3.4.6
+```  
+
+### Set-up
 
 
