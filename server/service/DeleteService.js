@@ -12,12 +12,12 @@ exports.deletePOST = function(body) {
     var message = {};	
     return new Promise(function(resolve, reject) {
  	  db_utils.db_delete(body, function(res){	
-		  if (Object.keys(res).length > 0) {	
+		if(Object.keys(res).length > 0) {	
 	  		message = JSON.stringify({"message" : res});
 	  		console.log(message);
-			resolve(message);
+			  resolve(message);
 		  }else{
-			reject(message);
+			  reject(message);
 		  }
 	  });	  
     });

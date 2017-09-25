@@ -81,13 +81,22 @@ var db_delete = exports.db_delete =  function(myobj, callback) {
 
 function _delete (myobj, db, callback){
 	console.log('Executing delete');
-	var collection = db.collection(db_collection);
-	// Insert a document
-	collection.deleteOne(myobj, function(err, res){
+	  var collection = db.collection(db_collection);
+	  // delete a document
+	  collection.deleteOne(myobj, function(err, res){
     	if (err){
     		return new Error();
     	}
-		console.log('Delete succeeded');
-		return callback("ok");
+      var mes;
+	  	if(res.deletedCount == 0) {
+        mes = "Item not found!";
+        console.log('Item not found! Nothing to delete!');
+      } else if(res.deletedCount == 1) {
+        mes = "Delete 1 item!";
+        console.log('Delete succeeded! (1 item)'); 
+      } else {
+        mes = "Delete unexpectedly!"
+      }
+	  	return callback(mes);
    })
 }
