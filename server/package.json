@@ -17,7 +17,7 @@
     "connect": "^3.2.0",
     "js-yaml": "^3.3.0",
     "mongodb": "^2.2.30",
-    "nodemon": "^1.11.0",
+    "nodemon": "^1.12.1",
     "ssh-exec": "^2.0.0",
     "swagger-tools": "0.10.1"
   }
