@@ -15,10 +15,10 @@ exports.getPOST = function(getId) {
 		  if (Object.keys(res).length > 0) {	
 	  		message = JSON.stringify({"message" : res});
 	  		console.log(message);
-			resolve(message);
+	   		resolve(message);
 		  }else{
 			  console.log(message);
-			reject(message);
+   			reject(message);
 		  }
 	  });	  
     });

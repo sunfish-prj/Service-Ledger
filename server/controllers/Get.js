@@ -10,6 +10,6 @@ module.exports.getPOST = function getPOST (req, res, next) {
       utils.writeJson(res, response, 200);
     })
     .catch(function (response) {
-      utils.writeJson(res, response, 400);
+      utils.writeJson(res, response, 404);
     });
 };
