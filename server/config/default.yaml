@@ -11,6 +11,7 @@ out-service:
    port: 27017
    dbname: sunfish-registry
    dbcollection: keyValueStore
+   hl_invoke_type: invoke        #it can be "invoke" or "put"; invoke is general purpose, "put" is just for keyValueStore chaincode
    hl_user: ubuntu
    hl_password: ubuntu
    hl_ip: 192.168.1.107

@@ -42,6 +42,39 @@ function _put (myobj, callback){
 }
 
 
+/* Hyperledger Fabric - INVOKE */
+var hl_invoke = exports.hl_invoke =  function(myobj, callback) {	
+	console.log('invoking ssh');    
+	_invoke(myobj, function(res){
+	      return callback(res);
+	  });
+}
+
+function _invoke (myobj, callback){
+	console.log('Executing invoke');
+	
+	var key = myobj.key;
+	if (key == 'invoke') {
+		var args = myobj.value;
+		var command = hl_script_path + 'hl_invoke.sh ' +' '+ hl_endorser_peer +' '+ hl_channel +' '+ hl_chaincode +' '+ args +' '+ hl_dockerid;
+		console.log('command: ' + command);
+		
+		// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d826131
+		exec(command, {
+		  user: hl_user,
+		  host: hl_ip,
+		  password: hl_pass
+		}).pipe(process.stdout)
+		
+		console.log('Invoke succeeded');
+		return callback("ok");
+	} else {
+		console.log('Bad key. It must be 'invoke' when invoke as chaincode type is selected.');
+		return callback("error due to bad inserted key");
+	}
+}
+
+
 /* Hyperledger Fabric - GET */
 var hl_get = exports.hl_get =  function(_id, callback) {	
     MongoClient.connect(url, function(err, db) {

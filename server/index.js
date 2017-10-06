@@ -52,7 +52,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 		console.log('Hyperledger Fabric chosen');
     }
 
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
+    console.log('Registry server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
   });
 
