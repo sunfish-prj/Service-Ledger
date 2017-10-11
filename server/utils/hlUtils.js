@@ -67,11 +67,13 @@ function _invoke (myobj, callback){
 		}).pipe(process.stdout)
 		
 		console.log('Invoke succeeded');
-		return callback("ok");
-	} else {
-		console.log('Bad key. It must be 'invoke' when invoke as chaincode type is selected.');
-		return callback("error due to bad inserted key");
-	}
+		//return callback("ok");
+	} //else {
+	  //	console.log('Bad key. It must be 'invoke' when invoke as chaincode type is selected.');
+	  //	return callback("error due to bad inserted key");
+	  //}
+	return callback("ok");
+
 }
 
 
