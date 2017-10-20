@@ -86,7 +86,76 @@ paths:
         401:
           description: "The operation is not allowed."
       x-swagger-router-controller: "Delete"
+
+  /installCC:
+    post:
+      tags:
+      - "installChaincode"
+      description: "install a chaincode"
+      operationId: "installChaincode"
+      parameters:
+      - in: "body"
+        name: "body"
+        require: true
+        schema:
+          $ref: "#definitions/install-chaincode-body"
+      responses:
+        200:
+          description: "The response body for a successful chaincode installation."
+          schema: "#definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed."
+      x-swagger-router-controller: "installChaincode"
+
+  /initCC:
+    post:
+      tags:
+      - "initChaincode"
+      description: "init the installed chaincode"
+      operationId: "initChaincode"
+      parameters:
+      - in: "body"
+        name: "body"
+        require: true
+        schema:
+          $ref: "#definitions/init-chaincode-body"
+      response:
+        200:
+          description: "The response body for a successful chaincode init"
+          schema: "#definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed"
+      x-swagger-router-controller: "initChaincode"
+
+  /invokeCC:
+    post:
+      tags:
+      - "invokeChaincode"
+      description: "invoke the functions in the chaincode"
+      operationId: "invokeChaincode"
+      parameters:
+      - in: "body"
+        name :"body"
+        require: true
+        schema:
+          $ref: "#definitions/invoke-chaincode-body"
+      response:
+        200:
+          description: "The response body for a successful chaincode invoke"
+          schema: "#definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed"
+      x-swagger-router-controoler: "invokeChaincode"
+
+
 definitions:
+
   put-request-body:
     type: "object"
     required:
@@ -100,6 +169,7 @@ definitions:
         type: "string"
         description: "The vaue associated to the requested key."
     description: "HTTP body defining the input for put operations."
+  
   get-request-body:
     type: "object"
     required:
@@ -109,6 +179,7 @@ definitions:
         type: "string"
         description: "Identifier of the requesting entity."
     description: "HTTP body defining the input for get operations"
+
   delete-request-body:
     type: "object"
     required:
@@ -118,6 +189,66 @@ definitions:
         type: "string"
         description: "Identifier of the requesting entity."
     description: "HTTP body defining the input for delete operations"
+      
+  install-chaincode-body:
+    type: "object"
+    required:
+    - "peers"
+    - "chaincodeName"
+    - "chaincodePath"
+    - "chaincodeType"
+    - "chaincodeVersion"
+    properties:
+      peers:
+        type: "array"
+        description: "peers to install the chaincode"
+      chaincodeName:
+        type: "string"
+        description: "name of the chaincode"
+      chaincodePath:
+        type: "string"
+        description: "path of the chaincode"
+      chaincodeType:
+        type: "string"
+        description: "chaincode type (golang, java etc.)"
+      chaincodeVersion:
+        type: "string"
+        description: "version of the chaincode"
+
+  init-chaincode-body:
+    type: "object"
+    required:
+    - "chaincodeName"
+    - "chaincodeVersion"
+    - "chaincodeType"
+    - "args"
+    properties:
+      chaincodeName:
+        type: "string"
+        description: "name of the chaincode"
+      chaincodeVersion:
+        type: "string"
+        description: "version of the chaincode"
+      chaincodeType:
+        type: "string"
+        description: "chaincode type (golang, java etc.)"
+      args:
+        type: "array"
+        description: "initial arguments of the chaincode"
+
+  invoke-chaincode-body:
+    type: "object"
+    required:
+    - "fcn"
+    - "args"
+    properties:
+      fcn:
+        type: "string"
+        description: "function name to invoke"
+      args:
+        type: "array"
+        description: "arguments of the function"
+
   response:
     type: "object"
     required:
