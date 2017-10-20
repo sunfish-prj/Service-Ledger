@@ -93,6 +93,7 @@ paths:
       - "installChaincode"
       description: "install a chaincode"
       operationId: "installChaincode"
+
       parameters:
       - in: "body"
         name: "body"
