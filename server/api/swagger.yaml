@@ -198,14 +198,14 @@ definitions:
   install-chaincode-body:
     type: "object"
     required:
-    - "token"
+    - "authorization"
     - "peers"
     - "chaincodeName"
     - "chaincodePath"
     - "chaincodeType"
     - "chaincodeVersion"
     properties:
-      token:
+      authorization:
         type: "string"
       peers:
         type: "array"
@@ -228,14 +228,14 @@ definitions:
   init-chaincode-body:
     type: "object"
     required:
-    - "token"
+    - "authorization"
     - "chaincodeName"
     - "chaincodeVersion"
     - "chaincodeType"
     - "args"
     properties:
-      token:
-        type: "token"
+      authorization:
+        type: "string"
       chaincodeName:
         type: "string"
         description: "name of the chaincode"
@@ -254,11 +254,11 @@ definitions:
   invoke-chaincode-body:
     type: "object"
     required:
-    - "token"
+    - "authorization"
     - "fcn"
     - "args"
     properties:
-      token:
+      authorization:
         type: "string"
       fcn:
         type: "string"
