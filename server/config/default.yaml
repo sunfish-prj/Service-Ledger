@@ -25,3 +25,7 @@ out-service:
 hyperledger-service:
    host: localhost
    port: 4000
+   path: 
+     install: /chaincodes
+     init: /channels/mychannel/chaincodes
+     invoke: /channels/mychannel/chaincodes
