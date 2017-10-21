@@ -255,10 +255,13 @@ definitions:
     type: "object"
     required:
     - "authorization"
+    - "chaincodeName"
     - "fcn"
     - "args"
     properties:
       authorization:
+        type: "string"
+      chaincodeName:
         type: "string"
       fcn:
         type: "string"
