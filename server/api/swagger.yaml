@@ -39,6 +39,7 @@ paths:
         401:
           description: "The operation is not allowed."
       x-swagger-router-controller: "Put"
+        
   /get:
     post:
       tags:
@@ -64,6 +65,7 @@ paths:
         404:
           description: "The requested key is not found."
       x-swagger-router-controller: "Get"
+
   /delete:
     post:
       tags:
@@ -93,22 +95,22 @@ paths:
       - "installChaincode"
       description: "install a chaincode"
       operationId: "installChaincode"
-
       parameters:
       - in: "body"
         name: "body"
-        require: true
+        required: true
         schema:
-          $ref: "#definitions/install-chaincode-body"
+          $ref: "#/definitions/install-chaincode-body"
       responses:
         200:
           description: "The response body for a successful chaincode installation."
-          schema: "#definitions/response"
+          schema: 
+            $ref: "#/definitions/response"
         400:
           description: "Invalid request, required parameter(s) missing."
         401:
           description: "The operation is not allowed."
-      x-swagger-router-controller: "installChaincode"
+      x-swagger-router-controller: "InstallChaincode"
 
   /initCC:
     post:
@@ -119,18 +121,19 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        require: true
+        required: true
         schema:
-          $ref: "#definitions/init-chaincode-body"
-      response:
+          $ref: "#/definitions/init-chaincode-body"
+      responses:
         200:
           description: "The response body for a successful chaincode init"
-          schema: "#definitions/response"
+          schema: 
+            $ref: "#/definitions/response"
         400:
           description: "Invalid request, required parameter(s) missing."
         401:
           description: "The operation is not allowed"
-      x-swagger-router-controller: "initChaincode"
+      x-swagger-router-controller: "InitChaincode"
 
   /invokeCC:
     post:
@@ -140,19 +143,20 @@ paths:
       operationId: "invokeChaincode"
       parameters:
       - in: "body"
-        name :"body"
-        require: true
+        name: "body"
+        required: true
         schema:
-          $ref: "#definitions/invoke-chaincode-body"
-      response:
+          $ref: "#/definitions/invoke-chaincode-body"
+      responses:
         200:
           description: "The response body for a successful chaincode invoke"
-          schema: "#definitions/response"
+          schema:
+            $ref: "#/definitions/response"
         400:
           description: "Invalid request, required parameter(s) missing."
         401:
           description: "The operation is not allowed"
-      x-swagger-router-controoler: "invokeChaincode"
+      x-swagger-router-controller: "InvokeChaincode"
 
 
 definitions:
@@ -202,6 +206,8 @@ definitions:
     properties:
       peers:
         type: "array"
+        items: 
+          type: "string"
         description: "peers to install the chaincode"
       chaincodeName:
         type: "string"
@@ -235,6 +241,8 @@ definitions:
         description: "chaincode type (golang, java etc.)"
       args:
         type: "array"
+        items:
+          type: "string"
         description: "initial arguments of the chaincode"
 
   invoke-chaincode-body:
@@ -248,6 +256,8 @@ definitions:
         description: "function name to invoke"
       args:
         type: "array"
+        items:
+          type: "string"
         description: "arguments of the function"
 
   response:

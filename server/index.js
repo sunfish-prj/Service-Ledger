@@ -46,10 +46,10 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   http.createServer(app).listen(serverPort, function () {
     
     if (out_service_name == 'mongo') {
-		console.log('MongoDB chosen');
+    		console.log('MongoDB chosen');
     }
     if (out_service_name == 'fabric') {
-		console.log('Hyperledger Fabric chosen');
+	    	console.log('Hyperledger Fabric chosen');
     }
 
     console.log('Registry server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
