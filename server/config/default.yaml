@@ -26,6 +26,10 @@ hyperledger-service:
    host: localhost
    port: 4000
    path: 
+     login: /users
+     createChannel: /channels
+     joinChannel: /defaultChannel/peers
      install: /chaincodes
-     init: /channels/mychannel/chaincodes
-     invoke: /channels/mychannel/chaincodes
+     init: /channels/defaultChannel/chaincodes
+     invoke: /channels/defaultChannel/chaincodes
+
