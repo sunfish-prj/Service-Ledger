@@ -89,6 +89,29 @@ paths:
           description: "The operation is not allowed."
       x-swagger-router-controller: "Delete"
 
+  /setupLedger:
+    post:
+      tags:
+      - "setupLedger"
+      description: "setup hyperledger network, create channel and join channel"
+      operationId: "setupLedger"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/setup-ledger-body"
+      responses:
+        200:
+          description: "A JSON Web token for successful setup"
+          schema:
+            $ref: "#/definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed."
+      x-swagger-router-controller: "InstallChaincode"
+
   /installCC:
     post:
       tags:
@@ -194,7 +217,32 @@ definitions:
         type: "string"
         description: "Identifier of the requesting entity."
     description: "HTTP body defining the input for delete operations"
-      
+
+  setup-ledger-body:
+    type: "object"
+    required:
+    - "username"
+    - "orgName"
+    - "channelName"
+    - "channelConfigPath"
+    - "peers"
+    properties:
+      username:
+        type: "string"
+        description: "register this user to Hyperledger"
+      orgName:
+        type: "string"
+        description: "organisation of this user"
+      channelName:
+        type: "string"
+        description: "channel Name"
+      channelConfigPath:
+        type: "string"
+        description: "path of channel config file"
+      peers:
+        type: "array"
+        description: "peers to join this channel"
+
   install-chaincode-body:
     type: "object"
     required:
