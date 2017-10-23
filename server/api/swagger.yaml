@@ -241,6 +241,8 @@ definitions:
         description: "path of channel config file"
       peers:
         type: "array"
+        items:
+          type: "string"
         description: "peers to join this channel"
 
   install-chaincode-body:
