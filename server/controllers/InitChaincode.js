@@ -30,13 +30,14 @@ module.exports.initChaincode = function initChaincode(req, res, next) {
           "chaincodeType": req.body.chaincodeType,
           "args": req.body.args
       },
-      header: {
-          "authorization": req.body.authorization,
+      headers: {
+          "authorization": "Bearer " + req.body.authorization,
           "content-type": "application/json"
       },
       json: true
   }).then(response => {
       if(debug) console.log(response);
+      examples['application/json'].message = response;
 
       if (Object.keys(examples).length > 0) {
           res.setHeader('Content-Type', 'application/json');

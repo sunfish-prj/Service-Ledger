@@ -32,14 +32,14 @@ module.exports.installChaincode = function installChaincode(req, res, next) {
            "chaincodeType": req.body.chaincodeType,
            "chaincodeVersion": req.body.chaincodeVersion
       },
-      header: {
-           "authorization": req.body.authorization,
+      headers: {
+           "authorization": "Bearer " + req.body.authorization,
            "content-type": "application/json"
       },
       json: true
   }).then(response => {
      if(debug) console.log(response); 
-  
+     examples['application/json'].message = response;
      if (Object.keys(examples).length > 0) {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
