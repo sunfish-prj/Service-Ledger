@@ -110,7 +110,7 @@ paths:
           description: "Invalid request, required parameter(s) missing."
         401:
           description: "The operation is not allowed."
-      x-swagger-router-controller: "InstallChaincode"
+      x-swagger-router-controller: "SetupLedger"
 
   /installCC:
     post:

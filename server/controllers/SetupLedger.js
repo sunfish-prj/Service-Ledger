@@ -29,9 +29,11 @@ module.exports.setupLedger= function setupLedger(req, res, next) {
            "username": req.body.username,
            "orgName": req.body.orgName,
       },
+      /*
       headers: {
            "content-type": "application/x-www-form-urlencoded"
       },
+      */
       json: true
   }).then(response => {
      if(debug) console.log(response); 
@@ -45,6 +47,7 @@ module.exports.setupLedger= function setupLedger(req, res, next) {
         res.end();
      }
 
+     var token = response.token;
      // create channel
      rp({
          method: "POST",
@@ -59,11 +62,11 @@ module.exports.setupLedger= function setupLedger(req, res, next) {
               "channelConfigPath": req.body.channelConfigPath,
               },
          headers: {
-              "authorization": "Bearer " + response.token,
+              "authorization": "Bearer " + token,
               "content-type": "application/json"
               },
          json: true
-     });
+     }).then(response => {
 
      // join channel
      rp({
@@ -84,7 +87,7 @@ module.exports.setupLedger= function setupLedger(req, res, next) {
          json: true
      });
 
-
+     });
   }).catch(err => {
      if(debug) console.log("----->ServiceLedger: error when requesting hyperledger!"); 
      examples['application/json'].message = "error when requesting hyperledger";
