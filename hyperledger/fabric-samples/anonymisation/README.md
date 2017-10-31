@@ -1,6 +1,6 @@
-## Balance transfer
+## Anonymisation Service in Hyperledger 
 
-A sample Node.js app to demonstrate **__fabric-client__** & **__fabric-ca-client__** Node.js SDK APIs
+A sample Node.js app for anonymisation service in SUNFISH 
 
 ### Prerequisites and setup:
 
@@ -11,7 +11,7 @@ A sample Node.js app to demonstrate **__fabric-client__** & **__fabric-ca-client
 * [Download Docker images](http://hyperledger-fabric.readthedocs.io/en/latest/samples.html#binaries)
 
 ```
-cd fabric-samples/balance-transfer/
+cd fabric-samples/anonymisation/
 ```
 
 Once you have completed the above setup, you will have provisioned a local network with the following docker container configuration:
@@ -26,42 +26,10 @@ Once you have completed the above setup, you will have provisioned a local netwo
 
 ## Running the sample program
 
-There are two options available for running the balance-transfer sample
-
-### Option 1:
-
-##### Terminal Window 1
-
-* Launch the network using docker-compose
-
-```
-docker-compose -f artifacts/docker-compose.yaml up
-```
-##### Terminal Window 2
-
-* Install the fabric-client and fabric-ca-client node modules
-
-```
-npm install
-```
-
-* Start the node app on PORT 4000
-
-```
-PORT=4000 node app
-```
-
-##### Terminal Window 3
-
-* Execute the REST APIs from the section [Sample REST APIs Requests](https://github.com/hyperledger/fabric-samples/tree/master/balance-transfer#sample-rest-apis-requests)
-
-
-### Option 2:
-
 ##### Terminal Window 1
 
 ```
-cd fabric-samples/balance-transfer
+cd fabric-samples/anonymisation
 
 ./runApp.sh
 
@@ -73,16 +41,8 @@ cd fabric-samples/balance-transfer
 
 ##### Terminal Window 2
 
+* Execute the REST APIs from the section [Sample REST APIs Requests]
 
-In order for the following shell script to properly parse the JSON, you must install ``jq``:
-
-instructions [https://stedolan.github.io/jq/](https://stedolan.github.io/jq/)
-
-With the application started in terminal 1, next, test the APIs by executing the script - **testAPIs.sh**:
-```
-cd fabric-samples/balance-transfer
-
-./testAPIs.sh
 
 ```
 
@@ -240,55 +200,4 @@ curl -s -X GET \
   -H "content-type: application/json"
 ```
 
-### Network configuration considerations
-
-You have the ability to change configuration parameters by either directly editing the network-config.json file or provide an additional file for an alternative target network. The app uses an optional environment variable "TARGET_NETWORK" to control the configuration files to use. For example, if you deployed the target network on Amazon Web Services EC2, you can add a file "network-config-aws.json", and set the "TARGET_NETWORK" environment to 'aws'. The app will pick up the settings inside the "network-config-aws.json" file.
-
-#### IP Address** and PORT information
-
-If you choose to customize your docker-compose yaml file by hardcoding IP Addresses and PORT information for your peers and orderer, then you MUST also add the identical values into the network-config.json file. The paths shown below will need to be adjusted to match your docker-compose yaml file.
-
-```
-		"orderer": {
-			"url": "grpcs://x.x.x.x:7050",
-			"server-hostname": "orderer0",
-			"tls_cacerts": "../artifacts/tls/orderer/ca-cert.pem"
-		},
-		"org1": {
-			"ca": "http://x.x.x.x:7054",
-			"peer1": {
-				"requests": "grpcs://x.x.x.x:7051",
-				"events": "grpcs://x.x.x.x:7053",
-				...
-			},
-			"peer2": {
-				"requests": "grpcs://x.x.x.x:7056",
-				"events": "grpcs://x.x.x.x:7058",
-				...
-			}
-		},
-		"org2": {
-			"ca": "http://x.x.x.x:8054",
-			"peer1": {
-				"requests": "grpcs://x.x.x.x:8051",
-				"events": "grpcs://x.x.x.x:8053",
-				...			},
-			"peer2": {
-				"requests": "grpcs://x.x.x.x:8056",
-				"events": "grpcs://x.x.x.x:8058",
-				...
-			}
-		}
-
-```
-
-#### Discover IP Address
-
-To retrieve the IP Address for one of your network entities, issue the following command:
-
-```
-# this will return the IP Address for peer0
-docker inspect peer0 | grep IPAddress
-```
-
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+ToDO: license issue
