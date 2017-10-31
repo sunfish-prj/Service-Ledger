@@ -39,7 +39,8 @@ cd fabric-samples/anonymisation
 
 ##### Terminal Window 2
 
-* Execute the REST APIs from the section [Sample REST APIs Requests]
+* Execute the REST APIs from the section [Sample REST APIs Requests] or using
+  the provided postman collection
 
 
 ## Sample REST APIs Requests
