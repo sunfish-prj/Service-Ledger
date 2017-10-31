@@ -116,7 +116,7 @@ curl -s -X POST \
   -d '{
 	"chaincodeName":"anonymisation_cc",
 	"chaincodeVersion":"v0",
-	"args":["a","100","b","200"]
+	"args":["Data01","{'budget':10,'funType':['sum','avg','max','min'],'results':[-1,-1,-1,-1]}"]
 }'
 ```
 
