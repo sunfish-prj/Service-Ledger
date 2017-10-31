@@ -7,21 +7,26 @@
 package main
 
 import (
-        "errors"
-        "fmt"
-        "math"
+  /*
         "log"
-        "encoding/json"
         "net/http"
         "net/url"
         "io/ioutil"
         "strconv"
         "bytes"
+  */ 
+        "errors"
+        "encoding/json"
+        "math"
+        "fmt"
         "github.com/hyperledger/fabric/core/chaincode/shim"
-)
+        pb "github.com/hyperledger/fabric/protos/peer"
+      )
 
 const SMALL_BUDGET = 0.05
 const UTILITY_BOUND = 1500
+
+var logger = shim.NewLogger("chaincode_sharing_history")
 
 type SimpleChaincode struct {
 }
@@ -37,60 +42,55 @@ type ledgerMes struct {
 type queryMes struct {
   RequestBudget    float64   `json:"budget"`
   FunType          string    `json:"funType"`
+  Result           float64   `json:"result"`
 }
 
-var logger = shim.NewLogger("chaincode_sharing_history")
 
 func main() {
-        logger.Info("--->main called")
+        logger.Info("-----> main function called")
         err := shim.Start(new(SimpleChaincode))
         if err != nil {
-                fmt.Printf("Error starting sharing historty storage chaincode: %s", err)
+                logger.Errorf("Error starting sharing historty storage chaincode: %s", err)
         }
 }
 
 //Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response { 
-
-        /*
-        if len(args) != 2 {
-                return shim.Error(errors.New("Incorrect number of arguments. Expecting 2"));
-        }
-        */
+        logger.Info("########## anonymisation_cc Init ##########")
 
         _, args := stub.GetFunctionAndParameters()
 
         err := stub.PutState(args[0], []byte(args[1]))
         if err != nil {
-                return shim.Error("storing state error!");
+                return shim.Error(err.Error());
         }
+
         return shim.Success(nil)
 }
 
 //Invoke entry point to invoke a chaincode function
-func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-        fmt.Println("invoke is running" + function)
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
+        logger.Info("########## anonymisation_cc Invoke ##########")
+
+        function, args := stub.GetFunctionAndParameters()
 
         //Handle different functions
-        if function == "init" {
-                return t.Init(stub, "init", args)
-        } else if function == "queryMatchTest" {
-                logger.Info("--->queryMatchTest invoked")
-                return t.queryMatchTest(stub, args)
+        if function == "utilityCheck" {
+             logger.Info("------> utilityCheck invoked")
+             return t.utilityCheck(stub, args)
         }
 
-        fmt.Println("invoke did not find func:" + function)
+        logger.Errorf("Unknown action, check the first argument, must be one of 'utilityCheck'. But got: %v", args[0]) 
 
-        return nil, errors.New("Received unknown function invocation")
-
+        return shim.Error(fmt.Sprintf("Unknown function, must be one of 'utilityCheck'. But got: %v", args[0]))
 }
 
 
-func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []string) pb.Response {
        
-       var str string
-
        logger.Info("--->utilityCheck called!")
+
+       var str string
 
        var dataId string
        var value string
@@ -98,7 +98,7 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
 
        // args should have two parameter: datasetId and user's query
        if len(args) != 2 {
-               return nil, errors.New("Incorrect number of arguments. Expecting 2. DatasetId and your query ")
+               return shim.Error("Incorrect number of arguments. Expecting 2. DatasetId and your query ")
        }
        
        dataId = args[0];
@@ -114,7 +114,7 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
        valAsbytes, err := stub.GetState(dataId);
        if err != nil {
                 jsonResp := "{\"Error\": \"Failed to get the state for " + dataId + "\"}"
-                return nil, errors.New(jsonResp) 
+                return shim.Error(jsonResp) 
        }
 
        // parser the old query (from ledger)
@@ -143,9 +143,10 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
 
                 old_result = mes_from_ledger.Result[i]
                 // get perturbed result from anonymisation service
-                perturbed_result = getResultAnonyService(mes_from_query.FunType, SMALL_BUDGET, 1)
+                // perturbed_result = getResultAnonyService(mes_from_query.FunType, SMALL_BUDGET, 1)
+                perturbed_result = mes_from_query.Result;
+
                 // utility test
-                
                 logger.Info("--->got the perturbed result from anonymisation service(using small budget): ", perturbed_result)
 
                 if math.Abs(old_result - perturbed_result) < UTILITY_BOUND {
@@ -153,7 +154,7 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
                         logger.Info("--->perturbed result pass the utility test! Use this result for user's query!")
                         
                         final_result =  perturbed_result
-                        updateLedger(stub, dataId, mes_from_query.FunType, final_result, SMALL_BUDGET)
+                        // updateLedger(stub, dataId, mes_from_query.FunType, final_result, SMALL_BUDGET)
 
                         str = fmt.Sprintf("--->old result exists and perturbed result pass the utility test! result: %f", final_result)
                         
@@ -161,9 +162,10 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
                         logger.Info("--->perturbed result not pass the utility test! check if satify budget verification")
                         if mes_from_ledger.RemainBudget >= mes_from_query.RequestBudget  {
                               logger.Info("--->Pass the budget verification! Getting the new result from anonymisation service(using requested budget): ")
-                              final_result = getResultAnonyService(mes_from_query.FunType, mes_from_query.RequestBudget, 0)
+                              //final_result = getResultAnonyService(mes_from_query.FunType, mes_from_query.RequestBudget, 0)
+                              final_result = -2000;
                               // updateLedger()
-                              updateLedger(stub, dataId, mes_from_query.FunType, final_result, mes_from_query.RequestBudget)
+                              // updateLedger(stub, dataId, mes_from_query.FunType, final_result, mes_from_query.RequestBudget)
 
                               str = fmt.Sprintf("--->old result exists but perturbed result not pass the utility test, budget satify! result: %f", final_result)
                               
@@ -172,7 +174,7 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
                               final_result = -1000 
                               // updateLedger()
                               logger.Info("--->Still updating ledger using small budget and perturbed result..")
-                              updateLedger(stub, dataId, mes_from_query.FunType, perturbed_result, SMALL_BUDGET)
+                              // updateLedger(stub, dataId, mes_from_query.FunType, perturbed_result, SMALL_BUDGET)
 
                               str = fmt.Sprintf("--->old result exists, perturbed result not  pass the utility test, budget not enough, no result!")
                         }
@@ -181,9 +183,10 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
                 logger.Info("--->Old result not exist! Check if satify budget verification")
                 if mes_from_ledger.RemainBudget >= mes_from_query.RequestBudget  {
                         logger.Info("--->Pass the budget verification! Getting the new result from anonymisation service(using requested, budget): ")
-                        final_result = getResultAnonyService(mes_from_query.FunType, mes_from_query.RequestBudget, 0)
+                        //final_result = getResultAnonyService(mes_from_query.FunType, mes_from_query.RequestBudget, 0)
+                        final_result = -2000;
                         //updateLedger()
-                        updateLedger(stub, dataId, mes_from_query.FunType, final_result, mes_from_query.RequestBudget)
+                        // updateLedger(stub, dataId, mes_from_query.FunType, final_result, mes_from_query.RequestBudget)
 
                         str = fmt.Sprintf("--->old result not exist, budget satify, result: %f", final_result)
 
@@ -196,8 +199,9 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
 
                 }
        }
-       return []byte(str), nil 
+       return shim.Success([]byte(str)) 
 }
+
 
 func updateLedger(stub shim.ChaincodeStubInterface, dataId string, funType string, newResult float64, subBudget float64) (error) {
 
@@ -226,7 +230,7 @@ func updateLedger(stub shim.ChaincodeStubInterface, dataId string, funType strin
         // write back to the ledger
         err = stub.PutState(dataId, []byte(newValue_json))
         if err != nil {
-               return err 
+               return err
         }
 
         logger.Info("--->updating ledger, newBudget: ", newValue.RemainBudget, ", FunctionType: ", funType, ", newVale: ", newResult)
@@ -234,6 +238,7 @@ func updateLedger(stub shim.ChaincodeStubInterface, dataId string, funType strin
         return nil
 }
 
+/*
 type serviceResult struct {
          Result float64 `json:"result"`
 }
@@ -311,6 +316,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
         return valAsbytes, nil
 }
+*/
 
 /* Test only: write - invoke function to write key/value pair
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
