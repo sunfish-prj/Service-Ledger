@@ -34,7 +34,6 @@ cd fabric-samples/anonymisation
 ./runApp.sh
 
 ```
-
 * This lauches the required network on your local machine
 * Installs the fabric-client and fabric-ca-client node modules
 * And, starts the node app on PORT 4000
@@ -43,8 +42,6 @@ cd fabric-samples/anonymisation
 
 * Execute the REST APIs from the section [Sample REST APIs Requests]
 
-
-```
 
 ## Sample REST APIs Requests
 
