@@ -8,7 +8,11 @@ A sample Node.js app for anonymisation service in SUNFISH
 * [Docker Compose](https://docs.docker.com/compose/overview/) - v1.8 or higher
 * [Git client](https://git-scm.com/downloads) - needed for clone commands
 * **Node.js** v6.9.0 - 6.10.0 ( __Node v7+ is not supported__ )
-* [Download Docker images](http://hyperledger-fabric.readthedocs.io/en/latest/samples.html#binaries)
+* [Download Platform-specific Docker images]
+```
+curl -sSL https://goo.gl/Q3YRTi | bash
+```
+
 
 ```
 cd fabric-samples/anonymisation/
