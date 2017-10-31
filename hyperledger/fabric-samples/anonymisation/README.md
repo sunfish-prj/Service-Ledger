@@ -13,11 +13,6 @@ A sample Node.js app for anonymisation service in SUNFISH
 curl -sSL https://goo.gl/Q3YRTi | bash
 ```
 
-
-```
-cd fabric-samples/anonymisation/
-```
-
 Once you have completed the above setup, you will have provisioned a local network with the following docker container configuration:
 
 * 2 CAs
