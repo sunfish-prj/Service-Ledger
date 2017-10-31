@@ -22,6 +22,7 @@ Once you have completed the above setup, you will have provisioned a local netwo
 #### Artifacts
 * Crypto material has been generated using the **cryptogen** tool from Hyperledger Fabric and mounted to all peers, the orderering node and CA containers. More details regarding the cryptogen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#crypto-generator).
 * An Orderer genesis block (genesis.block) and channel configuration transaction (mychannel.tx) has been pre generated using the **configtxgen** tool from Hyperledger Fabric and placed within the artifacts folder. More details regarding the configtxgen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#configuration-transaction-generator).
+* the anonymisation chaincode is in ./artifacts/src/github.com/anonymisation_cc
 
 ## Running the sample program
 
@@ -39,7 +40,7 @@ cd fabric-samples/anonymisation
 
 ##### Terminal Window 2
 
-* Execute the REST APIs from the section [Sample REST APIs Requests] or using
+* Execute the REST APIs from the section [Sample REST APIs Requests] or use
   the provided postman collection
 
 
@@ -99,8 +100,8 @@ curl -s -X POST \
   -H "content-type: application/json" \
   -d '{
 	"peers": ["peer1","peer2"],
-	"chaincodeName":"mycc",
-	"chaincodePath":"github.com/example_cc",
+	"chaincodeName":"anonymisation_cc",
+	"chaincodePath":"github.com/anonymisation_cc",
 	"chaincodeVersion":"v0"
 }'
 ```
@@ -113,7 +114,7 @@ curl -s -X POST \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json" \
   -d '{
-	"chaincodeName":"mycc",
+	"chaincodeName":"anonymisation_cc",
 	"chaincodeVersion":"v0",
 	"args":["a","100","b","200"]
 }'
@@ -127,8 +128,8 @@ curl -s -X POST \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTQ4NjU1OTEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE0OTQ4NjE5OTF9.yWaJhFDuTvMQRaZIqg20Is5t-JJ_1BP58yrNLOKxtNI" \
   -H "content-type: application/json" \
   -d '{
-	"fcn":"move",
-	"args":["a","b","10"]
+	"fcn":"Init",
+	"args":["Data01","{'budget':10,'funType':['sum','avg','max','min'],'results':[-1,-1,-1,-1]}"]
 }'
 ```
 **NOTE:** Ensure that you save the Transaction ID from the response in order to pass this string in the subsequent query transactions.
