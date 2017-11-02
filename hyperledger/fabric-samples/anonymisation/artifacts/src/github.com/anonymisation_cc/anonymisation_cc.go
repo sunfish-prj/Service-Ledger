@@ -7,14 +7,11 @@
 package main
 
 import (
-  /*
-        "log"
-        "net/http"
-        "net/url"
-        "io/ioutil"
-        "strconv"
         "bytes"
-  */ 
+        "strconv"
+        "io/ioutil"
+        // "net/url"
+        "net/http"
         "errors"
         "encoding/json"
         "math"
@@ -60,6 +57,8 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 
         _, args := stub.GetFunctionAndParameters()
 
+        logger.Info("---->Init: args[0]", args[0], "---->Init: args[1]", args[1])
+
         err := stub.PutState(args[0], []byte(args[1]))
         if err != nil {
                 return shim.Error(err.Error());
@@ -77,12 +76,18 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
         //Handle different functions
         if function == "utilityCheck" {
              logger.Info("------> utilityCheck invoked")
+             logger.Info(args)
              return t.utilityCheck(stub, args)
         }
+        if function == "query" {
+             logger.Info("------> query invoked")
+             logger.Info(args)
+             return t.queryState(stub, args)
+        }
 
-        logger.Errorf("Unknown action, check the first argument, must be one of 'utilityCheck'. But got: %v", args[0]) 
+        logger.Errorf("Unknown action, check the first argument, must be one of 'utilityCheck' or 'query'. But got: %v", args[0]) 
 
-        return shim.Error(fmt.Sprintf("Unknown function, must be one of 'utilityCheck'. But got: %v", args[0]))
+        return shim.Error(fmt.Sprintf("Unknown function, must be one of 'utilityCheck' or 'query'. But got: %v", args[0]))
 }
 
 
@@ -93,7 +98,6 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
        var str string
 
        var dataId string
-       var value string
        var err error
 
        // args should have two parameter: datasetId and user's query
@@ -101,14 +105,15 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
                return shim.Error("Incorrect number of arguments. Expecting 2. DatasetId and your query ")
        }
        
+       logger.Info("---->args[0]: ", args[0], "----->args[1]: ", args[1]);
        dataId = args[0];
-       value = args[1];
        
        //parser user's query 
        mes_from_query := queryMes{}
-       json.Unmarshal([]byte(value), &mes_from_query);
+       json.Unmarshal([]byte(args[1]), &mes_from_query);
+       //json.Unmarshal([]byte("{'budget':10,'funType':'sum','result':9999}"), &mes_from_query);
 
-       logger.Info("--->parser user's query: ", mes_from_query)
+       logger.Info("---->parser user's query: ", mes_from_query)
 
        // get the old query from ledger
        valAsbytes, err := stub.GetState(dataId);
@@ -139,12 +144,12 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
        // if old result exist
        if flag {
                 // old result (from ledger)
-                logger.Info("--->old result exists on the ledger")
+              logger.Info("--->old result exists on the ledger")
+              if mes_from_ledger.RemainBudget >= mes_from_query.RequestBudget {
 
                 old_result = mes_from_ledger.Result[i]
                 // get perturbed result from anonymisation service
-                // perturbed_result = getResultAnonyService(mes_from_query.FunType, SMALL_BUDGET, 1)
-                perturbed_result = mes_from_query.Result;
+                perturbed_result = getResultAnonyService(mes_from_query.FunType)
 
                 // utility test
                 logger.Info("--->got the perturbed result from anonymisation service(using small budget): ", perturbed_result)
@@ -154,7 +159,7 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
                         logger.Info("--->perturbed result pass the utility test! Use this result for user's query!")
                         
                         final_result =  perturbed_result
-                        // updateLedger(stub, dataId, mes_from_query.FunType, final_result, SMALL_BUDGET)
+                        updateLedger(stub, dataId, mes_from_query.FunType, final_result, SMALL_BUDGET)
 
                         str = fmt.Sprintf("--->old result exists and perturbed result pass the utility test! result: %f", final_result)
                         
@@ -162,31 +167,36 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
                         logger.Info("--->perturbed result not pass the utility test! check if satify budget verification")
                         if mes_from_ledger.RemainBudget >= mes_from_query.RequestBudget  {
                               logger.Info("--->Pass the budget verification! Getting the new result from anonymisation service(using requested budget): ")
-                              //final_result = getResultAnonyService(mes_from_query.FunType, mes_from_query.RequestBudget, 0)
-                              final_result = -2000;
-                              // updateLedger()
-                              // updateLedger(stub, dataId, mes_from_query.FunType, final_result, mes_from_query.RequestBudget)
+                              final_result = getResultAnonyService(mes_from_query.FunType)
+                              
+                              // updateLedger
+                              updateLedger(stub, dataId, mes_from_query.FunType, final_result, mes_from_query.RequestBudget)
 
                               str = fmt.Sprintf("--->old result exists but perturbed result not pass the utility test, budget satify! result: %f", final_result)
                               
                         } else {
                               logger.Info("--->Do not pass the budget verification! Not return any result for the user! (-1000)")
                               final_result = -1000 
-                              // updateLedger()
+                              
+                              // updateLedger
                               logger.Info("--->Still updating ledger using small budget and perturbed result..")
-                              // updateLedger(stub, dataId, mes_from_query.FunType, perturbed_result, SMALL_BUDGET)
+                              updateLedger(stub, dataId, mes_from_query.FunType, perturbed_result, SMALL_BUDGET)
 
                               str = fmt.Sprintf("--->old result exists, perturbed result not  pass the utility test, budget not enough, no result!")
                         }
                 }
+              } else {
+                logger.Info("---->old result exists, but remaining budget is not enough for small budget! Not return any result for the user! (-1000)")
+                final_result = -1000
+                str = fmt.Sprintf("---->old result exists, but remaining budget is not enough for small budget to get perturbed result! Not return any result to the user! (-1000)")
+              }
        } else { // old result not exist
                 logger.Info("--->Old result not exist! Check if satify budget verification")
                 if mes_from_ledger.RemainBudget >= mes_from_query.RequestBudget  {
                         logger.Info("--->Pass the budget verification! Getting the new result from anonymisation service(using requested, budget): ")
-                        //final_result = getResultAnonyService(mes_from_query.FunType, mes_from_query.RequestBudget, 0)
-                        final_result = -2000;
+                        final_result = getResultAnonyService(mes_from_query.FunType)
                         //updateLedger()
-                        // updateLedger(stub, dataId, mes_from_query.FunType, final_result, mes_from_query.RequestBudget)
+                        updateLedger(stub, dataId, mes_from_query.FunType, final_result, mes_from_query.RequestBudget)
 
                         str = fmt.Sprintf("--->old result not exist, budget satify, result: %f", final_result)
 
@@ -199,6 +209,7 @@ func (t *SimpleChaincode) utilityCheck(stub shim.ChaincodeStubInterface, args []
 
                 }
        }
+       logger.Info(str);
        return shim.Success([]byte(str)) 
 }
 
@@ -238,72 +249,62 @@ func updateLedger(stub shim.ChaincodeStubInterface, dataId string, funType strin
         return nil
 }
 
-/*
-type serviceResult struct {
-         Result float64 `json:"result"`
-}
-
-func getResultAnonyService( funtype string, budget float64, flag int  ) float64  {
+func getResultAnonyService(funtype string) float64  {
 
         logger.Info("--->getResultAnonyService called")
         var resp *http.Response
         var err error
-        normalResp := true;
+        var normalResp bool
+        normalResp = true
 
-        data := url.Values{};
-        data.Set("budget", strconv.FormatFloat(budget, 'f', -1, 64));
-        data.Add("flag", strconv.Itoa(flag));
-        inputbody := bytes.NewBufferString(data.Encode());
+        pathname := "http://195.110.40.69:50001/api/v1/macro?configuration="
+        configuration_key := "5cda3540-cb8d-450c-83fe-dfc7e34ae989"
+        file_key := "5ebf79de-e8ec-4be6-9b0c-a790a240f973"
 
-        switch funtype {
-               case "sum": 
-                         resp, err = http.Post("http://10.7.6.25:3000/dataset/sum", "application/x-www-form-urlencoded", inputbody)
-               case "avg": 
-                         resp, err = http.Post("http://10.7.6.25:3000/dataset/avg", "application/x-www-form-urlencoded", inputbody) 
-               case "max": 
-                         resp, err = http.Post("http://10.7.6.25:3000/dataset/max", "application/x-www-form-urlencoded", inputbody)
-               case "min": 
-                         resp, err = http.Post("http://10.7.6.25:3000/dataset/min", "application/x-www-form-urlencoded", inputbody)
-               default:{
-                         log.Println("unrecognized function type")
-                         normalResp = false; 
-                       }
-        } 
+        list := []string{pathname, configuration_key, "&file=", file_key}
+        var str bytes.Buffer
+        for _,l := range list {
+            str.WriteString(l)
+        }
+
+        resp, err = http.Get(str.String())
+
         if err != nil {
-                log.Println(err);
+                logger.Info(err);
                 normalResp = false;
         }
 
         if normalResp {
                
-               body,err := ioutil.ReadAll(resp.Body);
+               body, err := ioutil.ReadAll(resp.Body);
+               
                if err != nil {
-                         log.Println(err);
+                         logger.Info(err);
                }
 
                defer resp.Body.Close();
 
-               result := serviceResult{}
+               result, _ := strconv.ParseFloat(string(body[1:len(body)-1]), 64)
 
-               if err := json.Unmarshal(body, &result); err != nil {
-                         log.Println(err); 
-               }
+               logger.Info("--->got the result from anonymisation service: ", funtype, " : ", result)
+               return result;
 
-               logger.Info("--->got the result from anonymisation service: ", funtype, " : ", result.Result)
-
-               return result.Result;
         } else {
-               
                return -1000;
         }
 }
+
+
 //Query is entry point for queries
-func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) queryState(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+        logger.Info("----> queryState called!")
+
         var key, jsonResp string
         var err error
 
         if len(args) != 1 {
-                return nil, errors.New("Incorrect number of arguments. Expecting name of the dataId to query")
+                return shim.Error("Incorrect number of arguments. Expecting name of the dataId to query")
         }
 
         key = args[0]
@@ -311,12 +312,11 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
         if err != nil {
                 jsonResp = "{\"Error\": \"Failed to get the state for " + key + "\"}"
-                return nil, errors.New(jsonResp)
+                return shim.Error(jsonResp)
         }
 
-        return valAsbytes, nil
+        return shim.Success(valAsbytes) 
 }
-*/
 
 /* Test only: write - invoke function to write key/value pair
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
