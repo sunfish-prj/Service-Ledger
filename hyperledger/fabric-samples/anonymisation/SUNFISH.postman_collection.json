@@ -25,7 +25,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"requestorID\": \"requestor001\",\n  \"token\": \"token001\",\n  \"data_provider\": \"data_provider001\",\n  \"data_consumer\": \"data_consumer001\",\n  \"time_stamp\": \"2017-01-01\",\n  \"dataID\": \"dataID001\",\n  \"function_type\": [\"average\",\"sum\",\"count\"],\n  \"privacy_budget\": {\"average\":10,\"sum\":10,\"count\":10},\n  \"configuration_key\": \"key1\",\n  \"file_key\": \"key2\"\n}"
+							"raw": "{\n  \"requestorID\": \"requestor001\",\n  \"token\": \"token001\",\n  \"data_provider\": \"data_provider001\",\n  \"data_consumer\": \"data_consumer001\",\n  \"time_stamp\": \"2017-01-01\",\n  \"dataID\": \"dataID001\",\n  \"function_type\": [\"average\",\"sum\",\"count\"],\n  \"privacy_budget\": {\"average\":10,\"sum\":10,\"count\":10},\n  \"configuration_key\": \"5cda3540-cb8d-450c-83fe-dfc7e34ae989\",\n  \"file_key\": \"08122038-421f-4b5f-9bbf-ca360739172f\"\n}"
 						},
 						"description": ""
 					},
@@ -45,7 +45,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"requestorID\": \"requestor001\",\n  \"token\": \"token001\",\n  \"data_consumer\": \"data_consumer001\",\n  \"data_provider\": \"data_provider001\",\n  \"dataID\": \"data001\",\n  \"function_type\": \"average\",\n  \"request_budget\": 1\n}"
+							"raw": "{\n  \"requestorID\": \"requestor001\",\n  \"token\": \"token001\",\n  \"data_consumer\": \"data_consumer001\",\n  \"data_provider\": \"data_provider001\",\n  \"dataID\": \"Data01\",\n  \"function_type\": \"average\",\n  \"request_budget\": 1\n}"
 						},
 						"description": ""
 					},
@@ -202,7 +202,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"anonymised_result\": 999,\n    \"budget_used\": 10,\n    \"dataID\": \"dataset001\",\n    \"data_consumer\": \"consumer001\",\n    \"function_type\": \"sum\",\n    \"requestorID\": \"requestor001\",\n    \"token\": \"token001\"\n}"
+									"raw": "{\n    \"anonymised_result\": 999,\n    \"budget_used\": 10,\n    \"dataID\": \"Data01\",\n    \"data_consumer\": \"consumer001\",\n    \"function_type\": \"sum\",\n    \"requestorID\": \"requestor001\",\n    \"token\": \"token001\"\n}"
 								},
 								"description": ""
 							},
@@ -260,7 +260,7 @@
 				{
 					"name": "Registry-GET",
 					"request": {
-						"url": "152.78.70.46:60005/r/get",
+						"url": "localhost:8090/r/get",
 						"method": "POST",
 						"header": [
 							{
@@ -271,7 +271,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"key\": \"policyId001\"\n}"
+							"raw": "{\n  \"key\": \"sum\"\n}"
 						},
 						"description": ""
 					},
@@ -371,7 +371,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"authorization\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDg3ODcyMDksInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDg3NTEyMDl9.A6UOctlh0msli0jHLtsFQceY1LOhou-k2jPAdiGEdGg\",\n  \"chaincodeName\": \"testcc2\",\n  \"fcn\": \"move\",\n  \"args\": [\"a\",\"b\",\"10\"]\n}"
+							"raw": "{\n  \"authorization\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDk2NzM4NzUsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDk2Mzc4NzV9.pERRFHhwZ0oBihn-d0CQmsKV0FYNUb1R2YWMcyRmeyI\",\n  \"chaincodeName\": \"anonymisation_cc\",\n  \"fcn\": \"utilityCheck\",\n  \"args\": [\"Data01\", \"{\\\"budget\\\":10,\\\"funType\\\":\\\"sum\\\",\\\"result\\\":9999}\"]\n}"
 						},
 						"description": ""
 					},
@@ -427,7 +427,7 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDg5NzAzMjksInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDg5MzQzMjl9.1TSpCKZuhrJCJNcMMkgMGarnZyb6t2fMo9zZ4FpwA30",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDk2NzM4NzUsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDk2Mzc4NzV9.pERRFHhwZ0oBihn-d0CQmsKV0FYNUb1R2YWMcyRmeyI",
 								"description": ""
 							},
 							{
@@ -452,7 +452,7 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDg5NzAzMjksInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDg5MzQzMjl9.1TSpCKZuhrJCJNcMMkgMGarnZyb6t2fMo9zZ4FpwA30",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDk2NzM4NzUsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDk2Mzc4NzV9.pERRFHhwZ0oBihn-d0CQmsKV0FYNUb1R2YWMcyRmeyI",
 								"description": ""
 							},
 							{
@@ -477,7 +477,7 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDg5NTg1NzEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDg5MjI1NzF9.ptdjr2sQYkfGBLXskma_3RLvj8RchByBXPIYHyM-11M",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDk2NzM4NzUsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDk2Mzc4NzV9.pERRFHhwZ0oBihn-d0CQmsKV0FYNUb1R2YWMcyRmeyI",
 								"description": ""
 							},
 							{
@@ -507,7 +507,7 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDg5NTg1NzEsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDg5MjI1NzF9.ptdjr2sQYkfGBLXskma_3RLvj8RchByBXPIYHyM-11M",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDk2NzM4NzUsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDk2Mzc4NzV9.pERRFHhwZ0oBihn-d0CQmsKV0FYNUb1R2YWMcyRmeyI",
 								"description": ""
 							},
 							{
@@ -518,21 +518,21 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"chaincodeName\":\"anonymisation_cc\",\n  \"chaincodeVersion\":\"v0\",\n  \"chaincodeType\": \"golang\",\n  \"fcn\": \"Init\",\n  \"args\": [\"Data01\", \"{'budget':10,'funType':['sum','avg','max','min'],'results':[-1, -1, -1, -1]}\"]\n}"
+							"raw": "{\n  \"chaincodeName\":\"anonymisation_cc\",\n  \"chaincodeVersion\":\"v0\",\n  \"chaincodeType\": \"golang\",\n  \"args\": [\"Data01\", \"{\\\"budget\\\":10,\\\"funType\\\":[\\\"sum\\\",\\\"avg\\\",\\\"max\\\",\\\"min\\\"],\\\"results\\\":[-1, -1, -1, -1]}\"]\n}"
 						},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "Invoke",
+					"name": "Invoke utilityCheck",
 					"request": {
 						"url": "http://localhost:4000/channels/mychannel/chaincodes/anonymisation_cc",
 						"method": "POST",
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDg5NzAzMjksInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDg5MzQzMjl9.1TSpCKZuhrJCJNcMMkgMGarnZyb6t2fMo9zZ4FpwA30",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDk2NTA3OTMsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDk2MTQ3OTN9.hFxCu-tO2cSG9PJgLwdYvIh0aofDa8N2XC2LH47cma8",
 								"description": ""
 							},
 							{
@@ -543,7 +543,32 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fcn\":\"init\",\n  \"args\":[\"Data01\", \"{'budget':10,'funType':['sum','avg','max','min'],'results':[-1, -1, -1, -1]}\"]\n}"
+							"raw": "{\n  \"fcn\":\"utilityCheck\",\n  \"args\":[\"Data01\", \"{\\\"budget\\\":10,\\\"funType\\\":\\\"sum\\\",\\\"result\\\":9999}\"]\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Invoke query",
+					"request": {
+						"url": "http://localhost:4000/channels/mychannel/chaincodes/anonymisation_cc",
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDk2NjU0NTcsInVzZXJuYW1lIjoiSmltIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MDk2Mjk0NTd9.ZVnT1d9eG00pr7fhb4CVO4qXsmVQm0HFMykHHBXLW5M",
+								"description": ""
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fcn\":\"query\",\n  \"args\":[\"Data01\"]\n}"
 						},
 						"description": ""
 					},
