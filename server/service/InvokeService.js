@@ -8,6 +8,7 @@ var hl_invoke_type = config.get('out-service.hl_invoke_type');
 var db_utils = require('../utils/dbUtils.js');
 var hl_utils = require('../utils/hlUtils.js');
 
+var debug = true;
 
 /**
  * invoke a chaincode function 
@@ -17,6 +18,9 @@ var hl_utils = require('../utils/hlUtils.js');
  **/
 exports.InvokePOST = function (invokeSpec) {
   var message = {};
+
+  if(debug) console.log("----> InvokePOST function in InvokeService.js called");
+
   return new Promise(function (resolve, reject) {
 
       if (out_service_name == 'fabric') {
