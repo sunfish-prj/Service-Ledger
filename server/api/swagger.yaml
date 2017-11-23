@@ -304,13 +304,13 @@ definitions:
   invoke-chaincode-body:
     type: "object"
     required:
-    - "authorization"
+    # - "authorization"
     - "chaincodeName"
     - "fcn"
     - "args"
     properties:
-      authorization:
-        type: "string"
+      # authorization:
+      #  type: "string"
       chaincodeName:
         type: "string"
       fcn:
