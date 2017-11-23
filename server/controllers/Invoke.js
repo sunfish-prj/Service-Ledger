@@ -8,7 +8,7 @@ var Invoke = require('../service/InvokeService');
 module.exports.invokePOST = function invokePOST (req, res, next) {
   var invokeSpec = req.swagger.params['invokeSpec'].value;
   
-  Invoke.invokePOST(invokeSpec)
+  Invoke.InvokePOST(invokeSpec)
     .then(function (response) {
       utils.writeJson(res, response, 200);
     })
