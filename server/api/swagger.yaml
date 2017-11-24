@@ -311,6 +311,10 @@ definitions:
     properties:
       # authorization:
       #  type: "string"
+      channel:
+        type: "string"
+      peer:
+        type: "string"
       chaincodeName:
         type: "string"
       fcn:
