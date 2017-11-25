@@ -6,22 +6,57 @@ server:
 
 # output service of the registry: it can be set either to "mongo" or "fabric"
 out-service:
-   name: mongo
+   name: fabric
+
+   # mongoDB settings
    ip: localhost
    port: 27017
    dbname: sunfish-registry
    dbcollection: keyValueStore
-   hl_invoke_type: invoke        #it can be "invoke" or "put"; invoke is general purpose, "put" is just for keyValueStore chaincode
+   
+   # hyperledger settings
+   #hl_invoke_type: invoke  # it can be "invoke" or "put"; invoke is general purpose, "put" is just for keyValueStore chaincode
+   hl_default_channel: mychannel
+   hl_default_chaincode: key_value_store
+   hl_default_dockerid: b6554566aff2  # docker id of cli
+   hl_default_peer: 0
+   hl_default_script_path: /opt/gopath/src/github.com/hyperledger/fabric/examples/e2e_cli/scripts/
+   
+   # hyperledger ip and port
+   hl_ip: localhost
+   hl_port: 2222
+   hl_peer_0_ip: localhost
+   hl_peer_1_ip: localhost
+   hl_peer_2_ip: localhost
+   hl_peer_0_port: 2222
+   hl_peer_1_port: 2222
+   hl_peer_2_port: 2222
+
+   # hyperledger username and password
    hl_user: ubuntu
    hl_password: ubuntu
-   hl_ip: 192.168.1.107
-   hl_port: 22
-   hl_channel: mychannel
-   hl_chaincode: keyValueStore
-   hl_dockerid: 1db78d826131
-   hl_script_path: /opt/gopath/src/github.com/hyperledger/fabric/examples/e2e_cli/scripts/
-   hl_endorser_peer: 0
+   hl_peer_0_user: ubuntu
+   hl_peer_0_password: ubuntu
+   hl_peer_1_user: ubuntu
+   hl_peer_1_password: ubuntu
+   hl_peer_2_user: ubuntu
+   hl_peer_2_password: ubuntu   
 
+   # hyperledger cli id of the peers
+   hl_peer_0_cli_id: b6554566aff2
+   hl_peer_1_cli_id: xxxxxxxxxxxx
+   hl_peer_2_cli_id: yyyyyyyyyyyy
+
+   # hyperledger key_value_store chaincode
+   #hl_invoke_type: invoke  # it can be "invoke" or "put"; invoke is general purpose, "put" is just for keyValueStore chaincode
+   #hl_default_channel: mychannel
+   #hl_default_chaincode: key_value_store
+   #hl_default_dockerid: b6554566aff2  # docker id of cli
+   #hl_default_peer: 0
+
+
+
+# for API with NodeSDK
 hyperledger-service:
    host: localhost
    port: 4000

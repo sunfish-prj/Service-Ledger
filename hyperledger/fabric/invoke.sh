@@ -30,7 +30,7 @@ fi
 
 env | grep CORE
 
-ARGSHL={\"Args\":[\"invoke\",\"$ARGS\"]}
+ARGSHL={\"Args\":[\"$ARGS\"]}
 echo "*******************"
 echo $ARGSHL
 echo "*******************"

@@ -17,7 +17,7 @@ var debug = true;
  * returns response
  **/
 exports.InvokePOST = function (invokeSpec) {
-  var message = {};
+  //var message = {};
 
   if(debug) console.log("----> InvokePOST function in InvokeService.js called");
 
@@ -29,7 +29,9 @@ exports.InvokePOST = function (invokeSpec) {
         if(debug) console.log("Calling hyperledger api to 'invoke' a chaincode...");
         hl_utils.hl_invoke(invokeSpec, function (res) {
           if (Object.keys(res).length > 0) {
-              message = JSON.stringify({ "message": res });
+              // var response_res= res.substr(res.indexOf('Invoke result'), );
+              // response_res= response_res.substring(response_res.indexOf('\"')+1, response_res.indexOf('>')-2);
+              var message = JSON.stringify({ "message": res});
               console.log(message);
               resolve(message);
           } else {
