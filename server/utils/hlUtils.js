@@ -27,7 +27,7 @@ function _put (myobj, callback){
 	
 	var key = myobj.key;
 	var value = myobj.value;
-	console.log("###"+key+" "+value+"###########");
+	console.log("[hlUtils.js] PUT key:"+key+" value:"+value);
 	var command = hl_script_path + 'hl_put.sh ' +' '+ hl_peer +' '+ hl_channel +' '+ hl_chaincode +' '+ key +' '+ value +' '+ hl_dockerid;
 	console.log('command: ' + command);
 
@@ -73,7 +73,6 @@ function _invoke (myobj, callback){
 	  peer_ip = config.get('out-service.hl_peer_'+peer+'_ip');
 	  peer_user = config.get('out-service.hl_peer_'+peer+'_user');
 	  peer_pass = config.get('out-service.hl_peer_'+peer+'_password');
-	  console.log("############ "+"user:"+peer_user+" Pass:"+peer_pass+" IP:"+peer_ip+" #####");
 	}
 	else{
 	  console.log("You are using DEFAULT PEER");
@@ -166,63 +165,7 @@ var hl_get = exports.hl_get =  function(_id, callback) {
 function _get (_id, db, callback){
 	console.log('Executing get');
 	var collection = db.collection(db_collection);
-	
-	//peer info
-	var peer = undefined;
-	var peer_ip = undefined;
-	var peer_user = undefined;
-	var peer_pass = undefined;
 
-	var channel = undefined;
-	var chaincode_name = undefined;
-	if ('peer' in myobj && myobj.peer != ''){
-	  console.log("############INIT###############");
-	  peer = myobj.peer;
-	  console.log("############ "+peer+" ###############");
-	  //take the dockerid cli, username, id, password related to the peer inserted
-	  dockerId = config.get('out-service.hl_peer_'+peer+'_cli_id');
-	  peer_ip = config.get('out-service.hl_peer_'+peer+'_ip');
-	  peer_user = config.get('out-service.hl_peer_'+peer+'_user');
-	  peer_pass = config.get('out-service.hl_peer_'+peer+'_password');
-	  console.log("############ "+"user:"+peer_user+" Pass:"+peer_pass+" IP:"+peer_ip+" #####");
-	}
-	else{
-	  console.log("You are using DEFAULT PEER");
-	  peer_ip = hl_ip;
-	  peer_user = hl_user;
-	  peer_pass = hl_pass;
-	  peer = hl_peer;	//default one
-	  dockerId = hl_dockerid;	//default one
-	}
-
-	if ('channel' in myobj && myobj.channel != '' ){
-	  channel = myobj.channel;
-	}
-	else{
-	  console.log("You are using DEFAULT CHANNEL");
-	  channel = hl_channel;		//default one
-	}
-
-	if ('chaincodeName' in myobj && myobj.chaincodeName != '' ){
-		chaincode_name = myobj.chaincodeNme;
-	}
-	else{
-		console.log("You are using DEFAULT CHAINCODE");
-		chaincode_name = hl_chaincode;     //default one
-	}
-
-	if ('scriptPath' in myobj && myobj.scriptPath != '' ){
-		script_path = myobj.scriptPath;
-	}
-	else{
-		console.log("You are using DEFAULT SCRIPT PATH");
-		script_path = hl_script_path;     //default one
-	}
-
-	// Insert a document
-
-	var command = hl_script_path + 'hl_invoke.sh' +' '+ peer +' '+ channel +' '+ chaincode_name +' '+fcnargs+ ' '+ dockerId;
-	console.log('command: ' + command);
 
 	// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d826131
 	try {
