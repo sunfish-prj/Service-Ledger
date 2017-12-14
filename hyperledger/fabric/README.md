@@ -97,5 +97,5 @@ or can be used:
 *From the hyperledger working directory*
 
 9) To shutdown all the network
-
-      ./network-setup.sh down
+                
+        ./network-setup.sh down
