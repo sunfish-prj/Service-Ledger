@@ -162,11 +162,11 @@ func (t *SimpleChaincode) getProposal(stub shim.ChaincodeStubInterface, args []s
 /* Write the vote of a member state to the ledger in a different way is needed.
 There is as a 'pre-storing' phase to avoid probable concurrency issues
 The votes are stored with CompositeKeys that are represented with the index
-proposalID~peerID and they can be stored in the same data structure used for
+proposalID~voterID and they can be stored in the same data structure used for
 storing Proposal. In that way it is possible to votes avoiding cuncurrency issues
 that can be (each voter of given proposal has its slot to send the vote). */
 func (t *SimpleChaincode) vote(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	var peerID, propID, vote string
+	var voterID, propID, vote string
 	var err error
 	// map of valid votes
 	acceptedVotValues := map[string]bool{"accept": true, "reject": true}
@@ -178,7 +178,7 @@ func (t *SimpleChaincode) vote(stub shim.ChaincodeStubInterface, args []string) 
 
 	// Setting chaincode args
 	propID = args[0]
-	peerID = args[1]
+	voterID = args[1]
 	vote = args[2]
 
 	// create JSON structure
@@ -200,7 +200,7 @@ func (t *SimpleChaincode) vote(stub shim.ChaincodeStubInterface, args []string) 
 	}
 	fmt.Printf("\033[1;36m[E-VOTING CHAINCODE][Vote] JSON value of the proposal %s Unmarshal done.\033[0m\n", propID)
 
-	if proposal.Requestor == peerID {
+	if proposal.Requestor == voterID {
 		jsonResp := "{\"Error\":\"The proposal can not be voted by its requestor}"
 		return shim.Error(jsonResp)
 	}
@@ -212,17 +212,17 @@ func (t *SimpleChaincode) vote(stub shim.ChaincodeStubInterface, args []string) 
 		jsonResp := "\"Error\":\"Incorrect vote value. Expecting \"accept\", \"reject\"}"
 		return shim.Error(jsonResp)
 	}
-	fmt.Printf("[E-VOTING CHAINCODE][Vote] Storing Vote of PROPID = %s, PEERID = %s\n", propID, peerID)
+	fmt.Printf("[E-VOTING CHAINCODE][Vote] Storing Vote of PROPID = %s, VOTERID = %s\n", propID, voterID)
 
-	// create a composite key to store as a "cupled" key propID-peerId
-	keyVote, err := stub.CreateCompositeKey("proposal~peer", []string{propID, peerID})
+	// create a composite key to store as a "cupled" key propID-voterId
+	keyVote, err := stub.CreateCompositeKey("proposal~voter", []string{propID, voterID})
 	if err != nil {
 		jsonResp := "\033[1;31m{\"Error\":\"Failed to create the composite key\"}\033[0m\n"
 		return shim.Error(jsonResp)
 	}
 
 	// Takes the iterator of all the compositekeys contains propID
-	keyResultsIterator, err := stub.GetStateByPartialCompositeKey("proposal~peer", []string{propID})
+	keyResultsIterator, err := stub.GetStateByPartialCompositeKey("proposal~voter", []string{propID})
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -232,7 +232,7 @@ func (t *SimpleChaincode) vote(stub shim.ChaincodeStubInterface, args []string) 
 	// Iterate through result set and for each prop found, to check the positive votes
 	var i int
 	for i = 0; keyResultsIterator.HasNext(); i++ {
-		// Note that we don't get the value (2nd return variable), we'll just get the peerID from the composite key
+		// Note that we don't get the value (2nd return variable), we'll just get the voterID from the composite key
 		currentCompositeKey, err := keyResultsIterator.Next()
 		if err != nil {
 			return shim.Error(err.Error())
@@ -244,11 +244,11 @@ func (t *SimpleChaincode) vote(stub shim.ChaincodeStubInterface, args []string) 
 			return shim.Error(err.Error())
 		}
 		// returnedProposal := compositeKeyParts[0]
-		returnedPeer := compositeKeyParts[1]
-		if returnedPeer == peerID {
+		returnedVoter := compositeKeyParts[1]
+		if returnedVeer == voterID {
 			// If the member has been found ghet the value alreay voted and send an error
-			fmt.Print("\033[1;31m[E-VOTING CHAINCODE][Vote] The index " + string(objectType) + " already contains the peer" + string(returnedPeer) + "\033[0m\n")
-			jsonResp := "{\"Error\":\"the member " + string(peerID) + " has already voted.\"}"
+			fmt.Print("\033[1;31m[E-VOTING CHAINCODE][Vote] The index " + string(objectType) + " already contains the voter" + string(returnedVoter + "\033[0m\n")
+			jsonResp := "{\"Error\":\"the member " + string(voterID) + " has already voted.\"}"
 			return shim.Error(jsonResp)
 		}
 	}
@@ -267,7 +267,7 @@ func (t *SimpleChaincode) vote(stub shim.ChaincodeStubInterface, args []string) 
 /* The countVote fuction takes as input the proposal ID to validate;
 It interrogate the data structure to rertieve the information of
 the proposal to validate and the composite keys that has as prefix
-it (proposalID~peerID). The composite keys contains the votes to count
+it (proposalID~voterID). The composite keys contains the votes to count
 to validate the proposal as accepted or rejected. */
 func (t *SimpleChaincode) countVote(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var propID string
@@ -314,35 +314,34 @@ func (t *SimpleChaincode) countVote(stub shim.ChaincodeStubInterface, args []str
 	acceptCounter = 0
 	rejectCounter = 0
 	// takes the iterator of all the compositekeys contains propID
-	keyResultsIterator, err := stub.GetStateByPartialCompositeKey("proposal~peer", []string{propID})
+	keyResultsIterator, err := stub.GetStateByPartialCompositeKey("proposal~voter", []string{propID})
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 	defer keyResultsIterator.Close()
 
-	// get the proposal id and voter id from proposal-peer composite key
+	// get the proposal id and voter id from proposal-voter composite key
 	// #####################################################################################
 	// Iterate through result set and for each prop found, to check the positive votes
 	var i int
 	for i = 0; keyResultsIterator.HasNext(); i++ {
-		// Note that we don't get the value (2nd return variable), we'll just get the peerID from the composite key
+		// Note that we don't get the value (2nd return variable), we'll just get the voterID from the composite key
 		currentCompositeKey, err := keyResultsIterator.Next()
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 
-		// get the propsal and peer from proposal~peer composite key
+		// get the propsal and voter from proposal~voter composite key
 		objectType, compositeKeyParts, err := stub.SplitCompositeKey(currentCompositeKey.Key)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		returnedProposal := compositeKeyParts[0]
-		returnedPeer := compositeKeyParts[1]
-		fmt.Printf("[E-VOTING CHAINCODE][CountVote] found a vote from index:%s Proposal:%s Peer:%s\n", objectType, returnedProposal, returnedPeer)
+		returnedVoter := compositeKeyParts[1]
+		fmt.Printf("[E-VOTING CHAINCODE][CountVote] found a vote from index:%s Proposal:%s Voter:%s\n", objectType, returnedProposal, returnedVoter)
 
 		// get the value using the composite key
 		value := currentCompositeKey.Value
-		fmt.Printf("[E-VOTING CHAINCODE][CountVote] FOUND VALUE:%s \n", string(value))
 		if err != nil {
 			jsonResp := "{\"Error\":\"Failed to get state\"}"
 			return shim.Error(jsonResp)
