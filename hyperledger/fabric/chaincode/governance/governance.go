@@ -107,7 +107,7 @@ func (t *SimpleChaincode) submitProposal(stub shim.ChaincodeStubInterface, args 
 	// Check if a proposal with the same ID already exists TODO controllare il check
 	propJSONasBytes, err := stub.GetState(propID)
 	if propJSONasBytes != nil {
-		return shim.Error("[E-VOTING CHAINCODE][SubmitProposal] A proposal ID" + propID + "already exists")
+		return shim.Error("[E-VOTING CHAINCODE][SubmitProposal] A proposal ID " + propID + " already exists ")
 	}
 	fmt.Printf("[E-VOTING CHAINCODE][SubmitProposal] Executing Put: key = %s, value = %s\n", propID, string(proposalJSON))
 
@@ -245,9 +245,9 @@ func (t *SimpleChaincode) vote(stub shim.ChaincodeStubInterface, args []string) 
 		}
 		// returnedProposal := compositeKeyParts[0]
 		returnedVoter := compositeKeyParts[1]
-		if returnedVeer == voterID {
+		if returnedVoter == voterID {
 			// If the member has been found ghet the value alreay voted and send an error
-			fmt.Print("\033[1;31m[E-VOTING CHAINCODE][Vote] The index " + string(objectType) + " already contains the voter" + string(returnedVoter + "\033[0m\n")
+			fmt.Print("\033[1;31m[E-VOTING CHAINCODE][Vote] The index " + string(objectType) + " already contains the voter " + string(returnedVoter) + "\033[0m\n")
 			jsonResp := "{\"Error\":\"the member " + string(voterID) + " has already voted.\"}"
 			return shim.Error(jsonResp)
 		}
