@@ -1,6 +1,6 @@
 'use strict';
 
-var db_utils = require('../utils/dbUtils.js');
+var db_utils = require('../../hyperledger/fabric/utils/dbUtils.js');
 
 /**
  * Retrieving a value by its key 
