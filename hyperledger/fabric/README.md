@@ -99,3 +99,13 @@ or can be used:
 9) To shutdown all the network
                 
         ./network-setup.sh down
+
+
+
+**Utils**
+
+The directory 'utils' contains the JavaScripts to call the related sh and JS scipts to execute the chaincode functions. All the scripts in the directory 'SUNFISH/Service-Ledger/server' should have, hardcoded, the path of the files they used in this folder. (
+In example the script *InvokeService.js* has:
+                
+        var db_utils = require('../../hyperledger/fabric/utils/dbUtils.js');
+        var hl_utils = require('../../hyperledger/fabric/utils/hlUtils.js');
