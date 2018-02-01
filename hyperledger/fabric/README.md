@@ -105,7 +105,7 @@ or can be used:
 **Utils**
 
 The directory 'utils' contains the JavaScripts to call the related SH and JS executing the chaincode functions. All the scripts in the directory 'SUNFISH/Service-Ledger/server' should have, hardcoded, the path of the files they used in this folder. 
-In example the script *InvokeService.js*, which uses *db_utils* and *hl_utils*, has:
+In example the script *InvokeService.js*, which uses *dbUtils* and *hlUtils*, has:
                 
         var db_utils = require('../../hyperledger/fabric/utils/dbUtils.js');
         var hl_utils = require('../../hyperledger/fabric/utils/hlUtils.js');
