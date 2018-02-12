@@ -74,7 +74,7 @@ To use ServiceLedger with Hyperledger Fabric, it is required to put into all Hyp
 ### Server test
 To test the server API, there are available in the *test-client/* folder bash files with *curl* corresponding commands; url and port must be given as input, e.g. 
 ```
-  $ ./kvStore.sh localhost 60005
+  $ ./kvStore.sh localhost 8090
 ```
 
 Note that, this test requires MongoDB running, or if using Hyperledger Fabric, that the keyValueStore chaincode is deployed. Such a chaincode can be found in *Service-Ledger/server/hyperledger-fabric/chaincode/keyvaluestore*.
