@@ -1,0 +1,2 @@
+# TEST
+This section contains a simple script to test a keyvaluestore. By inspecting the *kvStore.sh* script is possible to see that is inserted (put) inside the key value store (Mongo or Fabric, according to the chosen one) a key *key1* with a value *value1*. Then this key is retrieved through a get operation and finally it is deleted.

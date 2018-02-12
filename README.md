@@ -12,14 +12,14 @@ Full documentation is reported in the official [SUNFISH Manual](http://sunfish-p
 
 ## Installation Guide
 
-### Dependencies 
+### Requirements 
 
-Install the dependencies 
+Install the NodeJs environment, specifically: 
 - *Node.js v6.x*
 - *Npm v3.x*
 Releases and installation guides can be found on the official web-sites [here](https://nodejs.org) and [here](https://www.npmjs.com/) 
 
-In case the MongoDB back-end in used, install the dependency
+In case the MongoDB back-end in used, install the following version:
 - *MongoDB v3.x* 
 Releases and installation guides can be found on the official web-site [here](https://www.mongodb.com/). 
 
@@ -36,23 +36,44 @@ The name of the command *node* can change wrt the os, refer to the official guid
   -> MongoDB shell version v3.4.6
 ```  
 
-### Server set-up
+Finally, install the following Node dependencies:
+- nodemon v1.14.12
+- scp2 v0.5.0
+```
+  $ npm install -g nodemon
+  $ npm install -g scp2
+```
 
+
+### Server set-up
 To set the service, execute the following commands
 ``` 
-  $ git clone https://github.com/sunfish-prj/Registry.git
-  $ cd Registry/server
+  $ git clone https://github.com/sunfish-prj/Service-Ledger.git
+  $ cd Service-Ledger/server
+```
+
+To set up the ServiceLedger server, edit the file *config/default.yaml* properly. In this file it can be set to use MongoDB or Hyperledger Fabric 1.0.
+In case the server is using MongoDB, you should also start it before ServiceLedger. See the corresponding command wrt your os [here](https://docs.mongodb.com/manual/administration/install-community/).
+Similarly, if using Hyperledger Fabric 1.0, you need a running Fabric cluster to gather all information related to its docker containers.
+
+Now you can start the ServiceLedger server:
+```
   $ npm start
 ```
-In case the server is using MongoDB, you should also start it. See the corresponding command wrt your os [here](https://docs.mongodb.com/manual/administration/install-community/)
 
-The server is now running and listening on the port chosen in the *config/default.yaml*. file (e.g. 60005). You can use the [client-stub interface](http://localhost:60005/docs).  
+
+The server is now running and listening on the port chosen in the *config/default.yaml*. file (e.g. 8090). You can use the [client-stub interface](http://localhost:8090/docs).  
+
+
+### Hyperledger API setup
+To use ServiceLedger with Hyperledger Fabric, it is required to put into all Hyperledger machines the ServiceLedger API as explained in *Service-Ledger/server/hyperledger-fabric/api/README.md*
+
 
 ### Server test
-
 To test the server API, there are available in the *test-client/* folder bash files with *curl* corresponding commands; url and port must be given as input, e.g. 
 ```
   $ ./kvStore.sh localhost 60005
 ```
 
+Note that, this test requires MongoDB running, or if using Hyperledger Fabric, that the keyValueStore chaincode is deployed. Such a chaincode can be found in *Service-Ledger/server/hyperledger-fabric/chaincode/keyvaluestore*.
 
