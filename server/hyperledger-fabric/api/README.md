@@ -1,3 +1,3 @@
-# Chain-code
+# API
 
-Chain-code to be deployed on Hyperledger Fabric v1.0 to realise a blockchain-based Registry
+This section contains the api to access hyperledger fabric's chaincodes.
