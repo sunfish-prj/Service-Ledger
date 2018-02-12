@@ -39,6 +39,8 @@ The name of the command *node* can change wrt the os, refer to the official guid
 Finally, install the following Node dependencies:
 - nodemon v1.14.12
 - scp2 v0.5.0
+
+To install them execute:
 ```
   $ npm install -g nodemon
   $ npm install -g scp2
