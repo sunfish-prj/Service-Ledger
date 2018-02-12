@@ -5,8 +5,8 @@ var config = require('config');
 var out_service_name = config.get('out-service.name');
 
 
-var db_utils = require('../../hyperledger/fabric/utils/dbUtils.js');
-var hl_utils = require('../../hyperledger/fabric/utils/hlUtils.js');
+var db_utils = require('../utils/dbUtils.js');
+var hl_utils = require('../utils/hlUtils.js');
 
 
 /**

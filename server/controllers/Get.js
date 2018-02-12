@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('../../hyperledger/fabric/utils/writer.js');
+var utils = require('../utils/writer.js');
 var Get = require('../service/GetService');
 
 module.exports.getPOST = function getPOST (req, res, next) {

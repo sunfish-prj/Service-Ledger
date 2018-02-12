@@ -124,7 +124,7 @@ function _invoke (myobj, callback){
 	
 	setTimeout( function(){
 		var fs = require('fs');
-		fs.readFile( "/opt/gopath/src/github.com/hyperledger/fabric/examples/e2e_cli/scripts/result.log", function (err, data) {
+		fs.readFile( hl_script_path + 'result.log', function (err, data) {
 		if (err) {
 			throw err; 
 		}
