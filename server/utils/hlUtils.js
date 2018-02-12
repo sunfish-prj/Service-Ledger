@@ -123,28 +123,44 @@ function _invoke (myobj, callback){
 	console.log('[hlUtils.js] Invoke succeeded');
 	
 	setTimeout( function(){
-		var fs = require('fs');
-		fs.readFile( hl_script_path + 'result.log', function (err, data) {
-		if (err) {
-			throw err; 
-		}
-
-		//clean results
-		var string_data = data.toString();
-		var response_res = string_data.substr(string_data.indexOf('response:'), 100);
-		response_res = response_res.replace(/\"/g, "");
 		
-		//kind of response checking 
-		response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "");
-		// GET
-		if ( response_res.includes("payload") ) {
-			response_res = response_res.split('payload:')[1];
+		var client = require('scp2')
+		client.scp({
+			host: peer_ip,
+			username: peer_user,
+			password: peer_pass,
+			path: hl_script_path + 'result.log'
+		}, './', function(err) {
+			if (err) {
+				throw err; 
+			}
 			
-		} else {
-			response_res = response_res.split("message:")[1];
-		}
-		return callback(response_res);
-	})}, 2000);
+			var fs = require('fs');
+			//fs.readFile( hl_script_path + 'result.log', function (err, data) {
+			fs.readFile( './result.log', function (err, data) {	
+				if (err) {
+					throw err; 
+				}
+		
+				//clean results
+				var string_data = data.toString();
+				var response_res = string_data.substr(string_data.indexOf('response:'), 100);
+				response_res = response_res.replace(/\"/g, "");
+				
+				//kind of response checking 
+				response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "");
+				// GET
+				if ( response_res.includes("payload") ) {
+					response_res = response_res.split('payload:')[1];
+					
+				} else {
+					response_res = response_res.split("message:")[1];
+				}
+				return callback(response_res);
+			
+			})
+			
+		})}, 2000);
 
 
 }

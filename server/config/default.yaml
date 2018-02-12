@@ -35,16 +35,16 @@ out-service:
    hl_peer_3_port: 22
 
    # hyperledger username and password
-   hl_user: user
-   hl_password: pwd
-   hl_peer_0_user: user0
-   hl_peer_0_password: pwd0
-   hl_peer_1_user: user1
-   hl_peer_1_password: pwd1
-   hl_peer_2_user: user2
-   hl_peer_2_password: pwd2
-   hl_peer_3_user: user3   
-   hl_peer_3_password: pwd3
+   hl_user: ubuntu
+   hl_password: ubuntu
+   hl_peer_0_user: ubuntu
+   hl_peer_0_password: ubuntu
+   hl_peer_1_user: ubuntu
+   hl_peer_1_password: ubuntu
+   hl_peer_2_user: ubuntu
+   hl_peer_2_password: ubuntu
+   hl_peer_3_user: ubuntu   
+   hl_peer_3_password: ubuntu
 
    # hyperledger cli id of the peers
    hl_peer_0_cli_id: c8571f1285d6
