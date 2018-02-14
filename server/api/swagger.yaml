@@ -2,15 +2,14 @@
 swagger: "2.0"
 info:
   version: "2.1.0"
-  title: "SUNFISH Registry"
+  title: "SUNFISH Service Ledger"
   contact:
     name: "Federico Lombardi"
     email: "f.lombardi@soton.ac.uk"
-basePath: "/r"
+basePath: "/sl"
 tags:
-- name: "put"
-- name: "get"
-- name: "delete"
+- name: "store"
+- name: "exec"
 consumes:
 - "application/json"
 produces:
@@ -19,7 +18,7 @@ paths:
   /put:
     post:
       tags:
-      - "put"
+      - "store"
       description: "Storing a key-value pair\n"
       operationId: "putPOST"
       parameters:
@@ -43,7 +42,7 @@ paths:
   /get:
     post:
       tags:
-      - "get"
+      - "store"
       description: "Retrieving a value by its key\n"
       operationId: "getPOST"
       parameters:
@@ -69,7 +68,7 @@ paths:
   /delete:
     post:
       tags:
-      - "delete"
+      - "store"
       description: "Delete a stored key\n"
       operationId: "deletePOST"
       parameters:
@@ -89,79 +88,10 @@ paths:
           description: "The operation is not allowed."
       x-swagger-router-controller: "Delete"
 
-  /setupLedger:
+  /invoke:
     post:
       tags:
-      - "setupLedger"
-      description: "setup hyperledger network, create channel and join channel"
-      operationId: "setupLedger"
-      parameters:
-      - in: "body"
-        name: "body"
-        required: true
-        schema:
-          $ref: "#/definitions/setup-ledger-body"
-      responses:
-        200:
-          description: "A JSON Web token for successful setup"
-          schema:
-            $ref: "#/definitions/response"
-        400:
-          description: "Invalid request, required parameter(s) missing."
-        401:
-          description: "The operation is not allowed."
-      x-swagger-router-controller: "SetupLedger"
-
-  /installCC:
-    post:
-      tags:
-      - "installChaincode"
-      description: "install a chaincode"
-      operationId: "installChaincode"
-      parameters:
-      - in: "body"
-        name: "body"
-        required: true
-        schema:
-          $ref: "#/definitions/install-chaincode-body"
-      responses:
-        200:
-          description: "The response body for a successful chaincode installation."
-          schema: 
-            $ref: "#/definitions/response"
-        400:
-          description: "Invalid request, required parameter(s) missing."
-        401:
-          description: "The operation is not allowed."
-      x-swagger-router-controller: "InstallChaincode"
-
-  /initCC:
-    post:
-      tags:
-      - "initChaincode"
-      description: "init the installed chaincode"
-      operationId: "initChaincode"
-      parameters:
-      - in: "body"
-        name: "body"
-        required: true
-        schema:
-          $ref: "#/definitions/init-chaincode-body"
-      responses:
-        200:
-          description: "The response body for a successful chaincode init"
-          schema: 
-            $ref: "#/definitions/response"
-        400:
-          description: "Invalid request, required parameter(s) missing."
-        401:
-          description: "The operation is not allowed"
-      x-swagger-router-controller: "InitChaincode"
-
-  /invokeCC:
-    post:
-      tags:
-      - "invokeChaincode"
+      - "exec"
       description: "invoke the functions in the chaincode"
       operationId: "invokePOST"
       parameters:
@@ -180,7 +110,6 @@ paths:
         401:
           description: "The operation is not allowed"
       x-swagger-router-controller: "Invoke"
-
 
 definitions:
 
