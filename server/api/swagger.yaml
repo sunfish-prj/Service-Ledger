@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  version: "2.1.0"
+  version: "2.2.0"
   title: "SUNFISH Service Ledger"
   contact:
     name: "Federico Lombardi"
@@ -10,6 +10,7 @@ basePath: "/sl"
 tags:
 - name: "store"
 - name: "exec"
+- name: "setup_bc"
 consumes:
 - "application/json"
 produces:
@@ -19,7 +20,7 @@ paths:
     post:
       tags:
       - "store"
-      description: "Storing a key-value pair\n"
+      description: "Storing a key-value pair\\n"
       operationId: "putPOST"
       parameters:
       - in: "body"
@@ -38,12 +39,11 @@ paths:
         401:
           description: "The operation is not allowed."
       x-swagger-router-controller: "Put"
-        
   /get:
     post:
       tags:
       - "store"
-      description: "Retrieving a value by its key\n"
+      description: "Retrieving a value by its key\\n"
       operationId: "getPOST"
       parameters:
       - in: "body"
@@ -64,12 +64,11 @@ paths:
         404:
           description: "The requested key is not found."
       x-swagger-router-controller: "Get"
-
   /delete:
     post:
       tags:
       - "store"
-      description: "Delete a stored key\n"
+      description: "Delete a stored key\\n"
       operationId: "deletePOST"
       parameters:
       - in: "body"
@@ -87,8 +86,73 @@ paths:
         401:
           description: "The operation is not allowed."
       x-swagger-router-controller: "Delete"
-
-  /invoke:
+  /setupLedger:
+    post:
+      tags:
+      - "setup_bc"
+      description: "setup hyperledger network, create channel and join channel"
+      operationId: "setupLedger"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/setup-ledger-body"
+      responses:
+        200:
+          description: "A JSON Web token for successful setup"
+          schema:
+            $ref: "#/definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed."
+      x-swagger-router-controller: "SetupLedger"
+  /installCC:
+    post:
+      tags:
+      - "setup_bc"
+      description: "install a chaincode"
+      operationId: "installChaincode"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/install-chaincode-body"
+      responses:
+        200:
+          description: "The response body for a successful chaincode installation."
+          schema:
+            $ref: "#/definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed."
+      x-swagger-router-controller: "InstallChaincode"
+  /initCC:
+    post:
+      tags:
+      - "setup_bc"
+      description: "init the installed chaincode"
+      operationId: "initChaincode"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/init-chaincode-body"
+      responses:
+        200:
+          description: "The response body for a successful chaincode init"
+          schema:
+            $ref: "#/definitions/response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed"
+      x-swagger-router-controller: "InitChaincode"
+  /invokeCC:
     post:
       tags:
       - "exec"
@@ -110,9 +174,7 @@ paths:
         401:
           description: "The operation is not allowed"
       x-swagger-router-controller: "Invoke"
-
 definitions:
-
   put-request-body:
     type: "object"
     required:
@@ -126,7 +188,6 @@ definitions:
         type: "string"
         description: "The vaue associated to the requested key."
     description: "HTTP body defining the input for put operations."
-  
   get-request-body:
     type: "object"
     required:
@@ -136,7 +197,6 @@ definitions:
         type: "string"
         description: "Identifier of the requesting entity."
     description: "HTTP body defining the input for get operations"
-
   delete-request-body:
     type: "object"
     required:
@@ -146,15 +206,14 @@ definitions:
         type: "string"
         description: "Identifier of the requesting entity."
     description: "HTTP body defining the input for delete operations"
-
   setup-ledger-body:
     type: "object"
     required:
-    - "username"
-    - "orgName"
-    - "channelName"
     - "channelConfigPath"
+    - "channelName"
+    - "orgName"
     - "peers"
+    - "username"
     properties:
       username:
         type: "string"
@@ -170,27 +229,26 @@ definitions:
         description: "path of channel config file"
       peers:
         type: "array"
+        description: "peers to join this channel"
         items:
           type: "string"
-        description: "peers to join this channel"
-
   install-chaincode-body:
     type: "object"
     required:
     - "authorization"
-    - "peers"
     - "chaincodeName"
     - "chaincodePath"
     - "chaincodeType"
     - "chaincodeVersion"
+    - "peers"
     properties:
       authorization:
         type: "string"
       peers:
         type: "array"
-        items: 
-          type: "string"
         description: "peers to install the chaincode"
+        items:
+          type: "string"
       chaincodeName:
         type: "string"
         description: "name of the chaincode"
@@ -203,15 +261,14 @@ definitions:
       chaincodeVersion:
         type: "string"
         description: "version of the chaincode"
-
   init-chaincode-body:
     type: "object"
     required:
+    - "args"
     - "authorization"
     - "chaincodeName"
-    - "chaincodeVersion"
     - "chaincodeType"
-    - "args"
+    - "chaincodeVersion"
     properties:
       authorization:
         type: "string"
@@ -226,20 +283,16 @@ definitions:
         description: "chaincode type (golang, java etc.)"
       args:
         type: "array"
+        description: "initial arguments of the chaincode"
         items:
           type: "string"
-        description: "initial arguments of the chaincode"
-
   invoke-chaincode-body:
     type: "object"
     required:
-    # - "authorization"
+    - "args"
     - "chaincodeName"
     - "fcn"
-    - "args"
     properties:
-      # authorization:
-      #  type: "string"
       channel:
         type: "string"
       peer:
@@ -251,10 +304,9 @@ definitions:
         description: "function name to invoke"
       args:
         type: "array"
+        description: "arguments of the function"
         items:
           type: "string"
-        description: "arguments of the function"
-
   response:
     type: "object"
     required:
@@ -262,8 +314,8 @@ definitions:
     properties:
       message:
         type: "string"
-        description: "A message signifying that the request action has been successfully\
-          \ executed"
+        description: "A message signifying that the request action has been successfully\\\
+          \ \\ executed"
     description: "HTTP response for a successful store operation"
     example:
       message: "aeiou"
