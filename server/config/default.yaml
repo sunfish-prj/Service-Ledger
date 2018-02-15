@@ -6,7 +6,7 @@ server:
 
 # output service of the registry: it can be set either to "mongo" or "fabric"
 out-service:
-   name: mongo
+   name: fabric
 
    # mongoDB settings
    ip: localhost
@@ -17,13 +17,13 @@ out-service:
    # hyperledger settings
    #hl_invoke_type: invoke  # it can be "invoke" or "put"; invoke is general purpose, "put" is just for keyValueStore chaincode
    hl_default_channel: sunfish-channel
-   hl_default_chaincode: key_value_store
+   hl_default_chaincode: keyValueStore
    hl_default_dockerid: c8571f1285d6  # docker id of cli
    hl_default_peer: 0
    hl_default_script_path: /opt/gopath/src/github.com/hyperledger/fabric/examples/sunfish/scripts/
    
    # hyperledger ip and port
-   hl_ip: localhost
+   hl_ip: MEF-hyperledger
    hl_port: 22
    hl_peer_0_ip: MEF-hyperledger
    hl_peer_1_ip: MEF-hyperledger

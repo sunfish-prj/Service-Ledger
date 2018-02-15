@@ -3,9 +3,8 @@
 PEER=$1
 CHANNEL=$2
 CHAINCODE_NAME=$3
-ARGS=$4
+KEY=$4
 DOCKER_ID=$5
-#SLEEP=5 #second to wait the commit on the blockchain before printing the response
 
 if [ -z "$1" ] ; then
 	echo "No argument supplied. Setting Default to 0."
@@ -31,13 +30,11 @@ fi
 
 env | grep CORE
 
-ARGS_SPLIT=$(echo \"$ARGS\" | sed 's/\,/","/g')
+ARGS={\"Args\":[\"delete\",\"${KEY}\"]}
+echo "*******************"
+echo $ARGS
+echo "*******************"
 
-ARGSHL={\"Args\":[$ARGS_SPLIT]}
-
-echo "[invoke] args splitted: $ARGS_SPLIT"
-echo "[invoke] args for fabric: $ARGSHL"
-
-exec /usr/local/bin/peer chaincode invoke -o orderer0:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL -n $CHAINCODE_NAME -c $ARGSHL >&scripts/result.log & echo "[invoke] executing invoke on the peer..."
+exec /usr/local/bin/peer chaincode invoke -o orderer0:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL -n $CHAINCODE_NAME -c $ARGS >&scripts/result-delete.log & echo "[delete] executing DELETE on the peer..."
 
 exit 0

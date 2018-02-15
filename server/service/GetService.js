@@ -4,6 +4,7 @@ var config = require('config');
 var out_service_name = config.get('out-service.name'); 
 
 var db_utils = require('../utils/dbUtils.js');
+var hl_utils = require('../utils/hlUtils.js');
 
 /**
  * Retrieving a value by its key 
@@ -18,9 +19,7 @@ exports.getPOST = function(getId) {
 			
 			if (out_service_name == 'mongo') {
 			
-				console.log("Calling mongo - put");
-
-				
+				console.log("[GetService.js] Calling Mongo - GET");
 		 	  	db_utils.db_get(getId, function(res){	
 				//db_utils.db_getKeys(getId, function(res){		   
 				if (Object.keys(res).length > 0) {	
@@ -40,11 +39,8 @@ exports.getPOST = function(getId) {
 		
 
 			if (out_service_name == 'fabric') {
-			
-				console.log("Calling hyperledger");
-			
-				console.log("Calling api to 'put' in the keyValueStore chaincode...");
-				hl_utils.hl_put(putSpec, function (res) {
+				console.log("[GetService.js] Calling Hyperledger Fabric - GET");
+				hl_utils.hl_get(getId, function (res) {
 					if (Object.keys(res).length > 0) {
 						message = JSON.stringify({ "message": res });
 						console.log(message);

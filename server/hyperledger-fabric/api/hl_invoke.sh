@@ -1,4 +1,5 @@
 #!/bin/bash
+
 PEER=$1
 CHANNEL=$2
 CHAINCODE_NAME=$3

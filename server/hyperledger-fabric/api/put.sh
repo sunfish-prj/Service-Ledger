@@ -39,5 +39,3 @@ echo "*******************"
 exec /usr/local/bin/peer chaincode invoke -o orderer0:7050  --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL -n $CHAINCODE_NAME -c $ARGS
 
 exit 0
-
-

@@ -124,7 +124,7 @@ func (t *SimpleChaincode) getAll(stub shim.ChaincodeStubInterface, args []string
 	var err error
 
 	if len(args) != 2 {
-		return shim.Error("Incorrect number of arguments. Expecting name of the person to query")
+		return shim.Error("Incorrect number of arguments. Expecting 2: startKey and endKey. Leave both null to get all the keys.")
 	}
 	startKey = args[0]
 	endKey = args[1]

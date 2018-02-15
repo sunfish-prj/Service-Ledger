@@ -15,21 +15,21 @@ var hl_peer = config.get('out-service.hl_default_peer');
 
 /* Hyperledger Fabric - PUT */
 var hl_put = exports.hl_put =  function(myobj, callback) {	
-	console.log('invoking ssh');    
+	console.log('[hlUtils.js] Calling PUT toward Hyperledger Fabric...');    
 	_put(myobj, function(res){
 	      return callback(res);
 	  });
 }
 
 function _put (myobj, callback){
-	console.log('Executing put');
+	console.log('[hlUtils.js] Executing PUT with following key and value:');
 
 	
 	var key = myobj.key;
 	var value = myobj.value;
 	console.log("[hlUtils.js] PUT key:"+key+" value:"+value);
 	var command = hl_script_path + 'hl_put.sh ' +' '+ hl_peer +' '+ hl_channel +' '+ hl_chaincode +' '+ key +' '+ value +' '+ hl_dockerid;
-	console.log('command: ' + command);
+	console.log('[hlUtils.js] Ready to execute the PUT command: ' + command);
 
 	// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d8$
 	try {
@@ -42,21 +42,21 @@ function _put (myobj, callback){
 			console.log(e);
 	}
 
-	console.log('Put succeeded');
+	console.log('[hlUtils.js] PUT lunched toward Hyperledger Fabric');
 	return callback("ok");
 }
 
 
 /* Hyperledger Fabric - INVOKE */
 var hl_invoke = exports.hl_invoke =  function(myobj, callback) {
-	console.log('[hlUtils.js] start invoking hyperledger');
+	console.log('[hlUtils.js] Calling INVOKE toward Hyperledger Fabric...');
 	_invoke(myobj, function(res){
 	      return callback(res);
 	  });
 }
 
 function _invoke (myobj, callback){
-	console.log('[hlUtils.js] preparing invoke');
+	console.log('[hlUtils.js] Preparing INVOKE params..');
 	
 	//peer info
 	var peer = undefined;
@@ -75,7 +75,7 @@ function _invoke (myobj, callback){
 	  peer_pass = config.get('out-service.hl_peer_'+peer+'_password');
 	}
 	else{
-	  console.log("You are using DEFAULT PEER");
+	  console.log("[hlUtils.js] No peer found in config file. Setting DEFAULT PEER");
 	  peer_ip = hl_ip;
 	  peer_user = hl_user;
 	  peer_pass = hl_pass;
@@ -87,7 +87,7 @@ function _invoke (myobj, callback){
 	  channel = myobj.channel;
 	}
 	else{
-	  console.log("[hlUtils.js] setting DEFAULT CHANNEL");
+	  console.log("[hlUtils.js] No channel found in config file. Setting DEFAULT CHANNEL");
 	  channel = hl_channel;		//default one
 	}
 
@@ -95,7 +95,7 @@ function _invoke (myobj, callback){
 		chaincode_name = myobj.chaincodeName;
 	}
 	else{
-		console.log("[hlUtils.js] setting DEFAULT CHAINCODE");
+		console.log("[hlUtils.js] No chaincode found in config file. Setting DEFAULT CHAINCODE");
 		chaincode_name = hl_chaincode;     //default one
 	}
 
@@ -105,7 +105,7 @@ function _invoke (myobj, callback){
 	//merge of the two strings in myobj -> e.g. "put,key,val"
 	var fcnargs = fcn+','+args;
 	var command = hl_script_path + 'hl_invoke.sh' +' '+ peer +' '+ channel +' '+ chaincode_name +' '+fcnargs+ ' '+ dockerId;
-	console.log('[hlUtils.js] command: ' + command);
+	console.log('[hlUtils.js] Ready to execute the INVOKE command: ' + command);
 
 	// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d826131
 	try {
@@ -118,10 +118,9 @@ function _invoke (myobj, callback){
 		console.log(e);
 	}
 
+	console.log('[hlUtils.js] INVOKE lunched toward Hyperledger Fabric');
 	
 	// a timeout is needed to avoid a reading of an old file
-	console.log('[hlUtils.js] Invoke succeeded');
-	
 	setTimeout( function(){
 		
 		var client = require('scp2')
@@ -162,77 +161,112 @@ function _invoke (myobj, callback){
 			
 		})}, 2000);
 
-
 }
 
 
 /* Hyperledger Fabric - GET */
-var hl_get = exports.hl_get =  function(_id, callback) {	
-    MongoClient.connect(url, function(err, db) {
-	  assert.equal(null, err);
-      console.log("Connected successfully to mongodb");
-	  _get(_id, db, function(res){
-	      db.close();
- 	  	  return callback(res);
+var hl_get = exports.hl_get =  function(myobj, callback) {	
+    console.log('[hlUtils.js] Calling GET operation toward Hyperledger Fabric...');
+	_get(myobj, function(res){
+	      return callback(res);
 	  });
-    });
 }
 
-function _get (_id, db, callback){
-	console.log('Executing get');
-	var collection = db.collection(db_collection);
+function _get (myobj, callback){
+	console.log('[hlUtils.js] Executing GET with following key:');
+	
+	var key = myobj.key;
+	console.log("[hlUtils.js] GET key:"+key);
+	var command = hl_script_path + 'hl_get.sh ' +' '+ hl_peer +' '+ hl_channel +' '+ hl_chaincode +' '+ key +' '+ hl_dockerid;
+	console.log('[hlUtils.js] Ready to execute the GET command: ' + command);
 
-
-	// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d826131
+	// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d8$
 	try {
-	  exec(command, {
-			user: peer_user,
-			host: peer_ip,
-			password: peer_pass
-		}).pipe(process.stdout);
+		exec(command, {
+						user: hl_user,
+						host: hl_ip,
+						password: hl_pass
+					}).pipe(process.stdout);
 	} catch(e) {
-		console.log(e);
+			console.log(e);
 	}
 
-	console.log('Invoke succeeded');
-	//
-	return callback("ok");
-
-	//
-
-	collection.findOne(_id, function(err, res){
-    	if (err) return;
-			try{
-				console.log('Get succeeded! Value: ' + res.value);
-				return callback(res.value);
-			}	catch (err) {
-				return callback(new Error());
+	console.log('[hlUtils.js] GET lunched toward Hyperledger Fabric');
+	
+	// a timeout is needed to avoid a reading of an old file
+	setTimeout( function(){
+		
+		var client = require('scp2')
+		client.scp({
+			host: hl_ip,
+			username: hl_user,
+			password: hl_pass,
+			path: hl_script_path + 'result-get.log'
+		}, './', function(err) {
+			if (err) {
+				throw err; 
 			}
-   })
+			
+			var fs = require('fs');
+			//fs.readFile( hl_script_path + 'result.log', function (err, data) {
+			fs.readFile( './result-get.log', function (err, data) {	
+				if (err) {
+					throw err; 
+				}
+		
+				//clean results
+				var string_data = data.toString();
+				var response_res = string_data.substr(string_data.indexOf('response:'), 100);
+				response_res = response_res.replace(/\"/g, "");
+				
+				//kind of response checking 
+				response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "");
+				// GET
+				if ( response_res.includes("payload") ) {
+					response_res = response_res.split('payload:')[1];
+					
+				} else {
+					response_res = response_res.split("message:")[1];
+					if (response_res === 'OK') {
+						response_res = 'NULL';
+					}	
+				}
+				return callback(response_res);
+			
+			})
+			
+		})}, 2000);
+	
 }
 
 
 /* Hyperledger Fabric - DELETE */
-var hl_delete = exports.db_delete =  function(myobj, callback) {	
-    MongoClient.connect(url, function(err, db) {
-	  assert.equal(null, err);
-      console.log("Connected successfully to mongodb");
-	  _delete(myobj, db, function(res){
-	      db.close();
- 	  	  return callback(res);
+var hl_delete = exports.hl_delete =  function(myobj, callback) {	
+	console.log('[hlUtils.js] Calling DELETE toward Hyperledger Fabric...');    
+	_delete(myobj, function(res){
+	      return callback(res);
 	  });
-    });
 }
 
-function _delete (myobj, db, callback){
-	console.log('Executing delete');
-	var collection = db.collection(db_collection);
-	// Insert a document
-	collection.deleteOne(myobj, function(err, res){
-    	if (err){
-    		return new Error();
-    	}
-		console.log('Delete succeeded');
-		return callback("ok");
-   })
+function _delete (myobj, callback){
+	console.log('[hlUtils.js] Executing DELETE with following key:');
+
+	var key = myobj.key;
+	console.log("[hlUtils.js] DELETE key:"+key);
+	var command = hl_script_path + 'hl_delete.sh ' +' '+ hl_peer +' '+ hl_channel +' '+ hl_chaincode +' '+ key +' '+ hl_dockerid;
+	console.log('[hlUtils.js] Ready to execute the DELETE command: ' + command);
+
+	// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d8$
+	try {
+		exec(command, {
+						user: hl_user,
+						host: hl_ip,
+						password: hl_pass
+					}).pipe(process.stdout);
+	} catch(e) {
+			console.log(e);
+	}
+
+	console.log('[hlUtils.js] DELETE lunched toward Hyperledger Fabric');
+	return callback("ok");
 }

@@ -20,7 +20,7 @@ exports.putPOST = function (putSpec) {
 	return new Promise(function (resolve, reject) {
 		
 		if (out_service_name == 'mongo') {
-			console.log("Calling mongo - put");
+			console.log("[PutService.js] Calling Mongo - PUT");
 			db_utils.db_put(putSpec, function (res) {
 				if (Object.keys(res).length > 0) {
 					message = JSON.stringify({ "message": res });
@@ -33,10 +33,7 @@ exports.putPOST = function (putSpec) {
 		}
 
 		if (out_service_name == 'fabric') {
-			
-			console.log("Calling hyperledger");
-			
-			console.log("Calling api to 'put' in the keyValueStore chaincode...");
+			console.log("[GetService.js] Calling Hyperledger Fabric - PUT");
 			hl_utils.hl_put(putSpec, function (res) {
 				if (Object.keys(res).length > 0) {
 					message = JSON.stringify({ "message": res });
