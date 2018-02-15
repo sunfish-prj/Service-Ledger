@@ -106,7 +106,7 @@ function _invoke (myobj, callback){
 	var fcnargs = fcn+','+args;
 	var command = hl_script_path + 'hl_invoke.sh' +' '+ peer +' '+ channel +' '+ chaincode_name +' '+fcnargs+ ' '+ dockerId;
 	console.log('[hlUtils.js] Ready to execute the INVOKE command: ' + command);
-
+	console.log('[hlUtils.js] Destination PEER: ' + peer_user +'@'+ peer_ip);
 	// example call script on fabric vm: ./hl_put_test.sh 0 mychannel keyValueStore k10 v10 1db78d826131
 	try {
 	  exec(command, {
@@ -131,14 +131,16 @@ function _invoke (myobj, callback){
 			path: hl_script_path + 'result.log'
 		}, './', function(err) {
 			if (err) {
-				throw err; 
+				console.log(err);
+				return;
 			}
 			
 			var fs = require('fs');
 			//fs.readFile( hl_script_path + 'result.log', function (err, data) {
 			fs.readFile( './result.log', function (err, data) {	
 				if (err) {
-					throw err; 
+					console.log(err);
+					return;
 				}
 		
 				//clean results
@@ -149,11 +151,14 @@ function _invoke (myobj, callback){
 				//kind of response checking 
 				response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "");
 				// GET
-				if ( response_res.includes("payload") ) {
+				/*if ( response_res.includes("payload") ) {
 					response_res = response_res.split('payload:')[1];
 					
 				} else {
 					response_res = response_res.split("message:")[1];
+				}*/
+				if ( !response_res.includes("payload") ) {
+					response_res = response_res + ' payload:NULL'
 				}
 				return callback(response_res);
 			
@@ -222,7 +227,7 @@ function _get (myobj, callback){
 				//kind of response checking 
 				response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "");
 				// GET
-				if ( response_res.includes("payload") ) {
+				/*if ( response_res.includes("payload") ) {
 					response_res = response_res.split('payload:')[1];
 					
 				} else {
@@ -230,7 +235,10 @@ function _get (myobj, callback){
 					if (response_res === 'OK') {
 						response_res = 'NULL';
 					}	
-				}
+				}*/
+				if ( !response_res.includes("payload") ) {
+					response_res = response_res + ' payload:NULL'
+				}				
 				return callback(response_res);
 			
 			})

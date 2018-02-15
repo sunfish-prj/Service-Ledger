@@ -17,8 +17,8 @@ out-service:
    # hyperledger settings
    #hl_invoke_type: invoke  # it can be "invoke" or "put"; invoke is general purpose, "put" is just for keyValueStore chaincode
    hl_default_channel: sunfish-channel
-   hl_default_chaincode: keyValueStore
-   hl_default_dockerid: c8571f1285d6  # docker id of cli
+   hl_default_chaincode: keyValueStore02
+   hl_default_dockerid: cli1_MEF #c8571f1285d6
    hl_default_peer: 0
    hl_default_script_path: /opt/gopath/src/github.com/hyperledger/fabric/examples/sunfish/scripts/
    
@@ -47,10 +47,10 @@ out-service:
    hl_peer_3_password: ubuntu
 
    # hyperledger cli id of the peers
-   hl_peer_0_cli_id: c8571f1285d6
-   hl_peer_1_cli_id: c8571f1285d6
-   hl_peer_2_cli_id: f8a9be607d80
-   hl_peer_3_cli_id: a094d6698b5b
+   hl_peer_0_cli_id: cli1_MEF  #c8571f1285d6
+   hl_peer_1_cli_id: cli1_MEF  #c8571f1285d6
+   hl_peer_2_cli_id: cli2_MITA #f8a9be607d80
+   hl_peer_3_cli_id: cli3_MIN  #a094d6698b5b
 
    # hyperledger key_value_store chaincode
    #hl_invoke_type: invoke  # it can be "invoke" or "put"; invoke is general purpose, "put" is just for keyValueStore chaincode
