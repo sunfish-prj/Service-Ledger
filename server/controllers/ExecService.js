@@ -41,9 +41,7 @@ exports.invokePOST = function(args, res, next) {
           res.writeHead(400,{'Content-Type':'application/json'});
     		  res.end(JSON.stringify({'message': 'error'}));
       }
-
-
-
+    });
   }
 
 }
