@@ -66,6 +66,44 @@ function _get (_id, db, callback){
    })
 }
 
+/* DB - ALL KEYS */
+var db_getKeys = exports.db_getKeys =  function(keyType, callback) {	
+    MongoClient.connect(url, function(err, db) {
+	  assert.equal(null, err);
+      console.log("Connected successfully to mongodb");
+	  _getKey(keyType, db, function(res){
+	      db.close();
+ 	  	  return callback(res);
+	  });
+    });
+}
+
+function _getKey (keyType, db, callback){
+	console.log('Executing get');
+	var collection = db.collection(db_collection);
+	// Insert a document
+	collection.find({}).toArray(function(err, res){
+    	if (err) throw err;
+		try{
+			console.log('Get AllKey succeeded! Value: ' + res);
+			var keys = [];
+			var k =0;
+			for (i =0; i < res.length; i++){
+				//TODO filter wrt the type of keys (categories)
+				if (res[i].key == keyType.key){
+					keys[k] = res[i].key
+					k++;
+				}
+			}
+			return callback(keys);
+		} catch (err) {
+			return callback(new Error());
+		}
+   })
+}
+
+
+
 
 /* DB - DELETE */
 var db_delete = exports.db_delete =  function(myobj, callback) {	

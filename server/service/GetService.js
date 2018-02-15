@@ -17,9 +17,13 @@ exports.getPOST = function(getId) {
     return new Promise(function(resolve, reject) {
 			
 			if (out_service_name == 'mongo') {
+			
 				console.log("Calling mongo - put");
-		 	  db_utils.db_get(getId, function(res){	
-				  if (Object.keys(res).length > 0) {	
+
+				
+		 	  	db_utils.db_get(getId, function(res){	
+				//db_utils.db_getKeys(getId, function(res){		   
+				if (Object.keys(res).length > 0) {	
 			  		message = JSON.stringify({"message" : res});
 			  		console.log(message);
 			   		resolve(message);
