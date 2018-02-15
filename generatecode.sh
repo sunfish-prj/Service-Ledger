@@ -2,7 +2,7 @@
 
 #Creation of Server-stub
 #swagger-codegen generate -i ./server/api/registry.yaml -l  -o ./server/
-swagger-codegen generate -i ./newapi/ServiceLedger.yaml -l nodejs-server -o ./server/
+swagger-codegen generate -i ./../ServiceLedger/ServiceLedger.yaml -l nodejs-server -o ./server/
 
 #Documentation
 #swagger-codegen generate -i ./server/api/registry.yaml -l dynamic-html -o .
