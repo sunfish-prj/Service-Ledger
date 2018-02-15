@@ -29,11 +29,9 @@ exports.invokePOST = function(args, res, next) {
   if (out_service_name == 'fabric') {
 
     console.log("[ExecService.js] Hyperledger Fabric - INVOKE");
-
+    var response = {};
     var payload = args.invokeSpec.value;
-
-    console.log(payload);
-
+    
     hl_utils.hl_invoke(payload, function (result) {
       if (Object.keys(result).length > 0) {
         res.writeHead(200,{'Content-Type':'application/json'});
