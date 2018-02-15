@@ -37,8 +37,7 @@ paths:
           description: "Invalid request, required parameter(s) missing."
         401:
           description: "The operation is not allowed."
-      x-swagger-router-controller: "Put"
-        
+      x-swagger-router-controller: "Store"
   /get:
     post:
       tags:
@@ -63,8 +62,7 @@ paths:
           description: "The operation is not allowed."
         404:
           description: "The requested key is not found."
-      x-swagger-router-controller: "Get"
-
+      x-swagger-router-controller: "Store"
   /delete:
     post:
       tags:
@@ -86,8 +84,33 @@ paths:
           description: "Invalid request, required parameter(s) missing."
         401:
           description: "The operation is not allowed."
-      x-swagger-router-controller: "Delete"
-
+      x-swagger-router-controller: "Store"
+  /getKeys:
+    post:
+      tags:
+      - "store"
+      description: "Get all the key of a category\n"
+      operationId: "getKeysPOST"
+      consumes:
+      - "application/jason"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Body in JSON"
+        required: true
+        schema:
+          $ref: "#/definitions/delete-request-body"
+      responses:
+        200:
+          description: "The response body for a successful response."
+          schema:
+            $ref: "#/definitions/key-response"
+        400:
+          description: "Invalid request, required parameter(s) missing."
+        401:
+          description: "The operation is not allowed (unauthorised access, the token\
+            \ is invalid, etc.)."
+      x-swagger-router-controller: "Store"
   /invoke:
     post:
       tags:
@@ -109,10 +132,8 @@ paths:
           description: "Invalid request, required parameter(s) missing."
         401:
           description: "The operation is not allowed"
-      x-swagger-router-controller: "Invoke"
-
+      x-swagger-router-controller: "Exec"
 definitions:
-
   put-request-body:
     type: "object"
     required:
@@ -126,7 +147,6 @@ definitions:
         type: "string"
         description: "The vaue associated to the requested key."
     description: "HTTP body defining the input for put operations."
-  
   get-request-body:
     type: "object"
     required:
@@ -136,7 +156,6 @@ definitions:
         type: "string"
         description: "Identifier of the requesting entity."
     description: "HTTP body defining the input for get operations"
-
   delete-request-body:
     type: "object"
     required:
@@ -146,100 +165,13 @@ definitions:
         type: "string"
         description: "Identifier of the requesting entity."
     description: "HTTP body defining the input for delete operations"
-
-  setup-ledger-body:
-    type: "object"
-    required:
-    - "username"
-    - "orgName"
-    - "channelName"
-    - "channelConfigPath"
-    - "peers"
-    properties:
-      username:
-        type: "string"
-        description: "register this user to Hyperledger"
-      orgName:
-        type: "string"
-        description: "organisation of this user"
-      channelName:
-        type: "string"
-        description: "channel Name"
-      channelConfigPath:
-        type: "string"
-        description: "path of channel config file"
-      peers:
-        type: "array"
-        items:
-          type: "string"
-        description: "peers to join this channel"
-
-  install-chaincode-body:
-    type: "object"
-    required:
-    - "authorization"
-    - "peers"
-    - "chaincodeName"
-    - "chaincodePath"
-    - "chaincodeType"
-    - "chaincodeVersion"
-    properties:
-      authorization:
-        type: "string"
-      peers:
-        type: "array"
-        items: 
-          type: "string"
-        description: "peers to install the chaincode"
-      chaincodeName:
-        type: "string"
-        description: "name of the chaincode"
-      chaincodePath:
-        type: "string"
-        description: "path of the chaincode"
-      chaincodeType:
-        type: "string"
-        description: "chaincode type (golang, java etc.)"
-      chaincodeVersion:
-        type: "string"
-        description: "version of the chaincode"
-
-  init-chaincode-body:
-    type: "object"
-    required:
-    - "authorization"
-    - "chaincodeName"
-    - "chaincodeVersion"
-    - "chaincodeType"
-    - "args"
-    properties:
-      authorization:
-        type: "string"
-      chaincodeName:
-        type: "string"
-        description: "name of the chaincode"
-      chaincodeVersion:
-        type: "string"
-        description: "version of the chaincode"
-      chaincodeType:
-        type: "string"
-        description: "chaincode type (golang, java etc.)"
-      args:
-        type: "array"
-        items:
-          type: "string"
-        description: "initial arguments of the chaincode"
-
   invoke-chaincode-body:
     type: "object"
     required:
-    # - "authorization"
+    - "args"
     - "chaincodeName"
     - "fcn"
-    - "args"
     properties:
-      # authorization:
-      #  type: "string"
       channel:
         type: "string"
       peer:
@@ -251,10 +183,9 @@ definitions:
         description: "function name to invoke"
       args:
         type: "array"
+        description: "arguments of the function"
         items:
           type: "string"
-        description: "arguments of the function"
-
   response:
     type: "object"
     required:
@@ -267,3 +198,28 @@ definitions:
     description: "HTTP response for a successful store operation"
     example:
       message: "aeiou"
+  key-get-body:
+    type: "object"
+    required:
+    - "keyType"
+    properties:
+      keyType:
+        type: "string"
+    description: "HTTP response containing the list of keys for a category"
+  key-response:
+    type: "object"
+    required:
+    - "list"
+    properties:
+      list:
+        type: "array"
+        items:
+          $ref: "#/definitions/keyresponse_list"
+    description: "HTTP response containing the list of keys for a category"
+  keyresponse_list:
+    required:
+    - "keyId"
+    properties:
+      keyId:
+        type: "string"
+        description: "Specifies the key id."

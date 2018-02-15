@@ -1,13 +1,13 @@
 'use strict';
 
-var fs = require('fs'),
-    path = require('path'),
-    http = require('http');
 
 var app = require('connect')();
 var assert = require('assert');
+var http = require('http');
+var fs = require('fs');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
+
 
 // output service configuration
 var config = require('config');
@@ -17,19 +17,17 @@ var serverPort = config.get('server').port;
 
 // swaggerRouter configuration
 var options = {
-  swaggerUi: path.join(__dirname, '/swagger.json'),
-  controllers: path.join(__dirname, './controllers'),
-  useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
+  swaggerUi: '/swagger.json',
+  controllers: './controllers',
+  useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
 };
 
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
-var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
+var spec = fs.readFileSync('./api/swagger.yaml', 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
-
 
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
-
   // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
   app.use(middleware.swaggerMetadata());
 
@@ -45,19 +43,11 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   // Start the server
   http.createServer(app).listen(serverPort, function () {
     
-    if (out_service_name == 'mongo') {
-    		console.log('MongoDB chosen');
-    }
-    if (out_service_name == 'fabric') {
-	    	console.log('Hyperledger Fabric chosen');
-    }
-
-    console.log('Registry server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+    
+		
+    console.log('Your server is listening on port %d (http://%s:%d)', serverPort, serverHost,
+                 serverPort);
+    console.log('Swagger-ui is available on http://%s:%d/docs', serverHost, serverPort);
   });
 
 });
-
-
-
-
