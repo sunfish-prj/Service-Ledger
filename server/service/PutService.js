@@ -2,7 +2,7 @@
 
 // output service configuration
 var config = require('config');
-var out_service_name = config.get('out-service.name');
+var out_service_name = config.get('out-service.name'); 
 
 
 var db_utils = require('../utils/dbUtils.js');
@@ -20,6 +20,7 @@ exports.putPOST = function (putSpec) {
 	return new Promise(function (resolve, reject) {
 		
 		if (out_service_name == 'mongo') {
+			console.log("Calling mongo - put");
 			db_utils.db_put(putSpec, function (res) {
 				if (Object.keys(res).length > 0) {
 					message = JSON.stringify({ "message": res });
