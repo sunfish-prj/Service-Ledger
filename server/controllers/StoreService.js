@@ -34,7 +34,6 @@ exports.deletePOST = function(args, res, next) {
     console.log("[StoreService.js] Calling Hyperledger Fabric - DELETE");
     hl_utils.hl_delete(keyPair, function (result) {
       if (Object.keys(result).length > 0) {
-        console.log(result);
         res.writeHead(200,{'Content-Type':'application/json'});
         response['application/json'] = {
           "message" : result
