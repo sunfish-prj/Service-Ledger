@@ -143,14 +143,10 @@ exports.getKeysPOST = function(args, res, next) {
 //   } ]
 // };
 
-  console.log("CIAO");
-
-  // TODO ??
-
   var response = {};
   var key = args.body.value;
 
-  console.log("arguments to store: " + keyPair);
+  console.log("arguments to store: " + key);
 
   if (out_service_name == 'mongo') {
     console.log("Calling mongo - get");

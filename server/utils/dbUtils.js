@@ -79,21 +79,23 @@ var db_getKeys = exports.db_getKeys =  function(keyType, callback) {
 }
 
 function _getKey (keyType, db, callback){
-	console.log('Executing get');
+	console.log('[dbUtils.js] Executing Get All Keys');
 	var collection = db.collection(db_collection);
 	// Insert a document
 	collection.find({}).toArray(function(err, res){
     	if (err) throw err;
 		try{
-			console.log('Get AllKey succeeded! Value: ' + res);
+			console.log('[dbUtils.js] Get #' + res.length +' successfully!' );
 			var keys = [];
 			var k =0;
-			for (i =0; i < res.length; i++){
-				//TODO filter wrt the type of keys (categories)
-				if (res[i].key == keyType.key){
-					keys[k] = res[i].key
-					k++;
-				}
+			for (i=0; i < res.length; i++){
+				if (JSON.stringify(res[i].key) != undefined){
+				//	console.log(JSON.stringify(res[i].key).indexOf(keyType.key));
+					if (JSON.stringify(res[i].key).indexOf(keyType.key) > -1){
+						keys[k] = res[i].key
+						k++;
+					}	
+				}				
 			}
 			return callback(keys);
 		} catch (err) {
