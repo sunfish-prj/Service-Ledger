@@ -1,22 +1,22 @@
 # Governance Chain-code
 
 This section contains "governance" chaincodes for the SUNFISH federation:
-The chain-code support four different function in order to achieve a voting session. The inputs that can thai takes are: 
+The chain-code support four different function in order to achieve a voting session. The function inputs are as follows: 
 
-- requestorID : represent the ID of the member that submit a proposal
+- requestorID : it represents the ID of the member who submits a proposal
 - proposalID : it is the ID of the proposal
 - proposalDescription : it is the description of the proposal
-- proposalType : this field represent the proposal typology (e.g. join, leave, update)
-- proposalQuorum : the typology of the quorum is needed to validate the proposal
-- proposalStatus : this is the current status of the proposal (e.g. pending, accepted, rejected)
-- votersNumber : this is the number of voters needed to make the proposal validable
+- proposalType : it represents the proposal typology (one among *join, leave, update*)
+- proposalQuorum : the type of quorum needed to validate the proposal (i.e. ...)
+- proposalStatus : it is the current status of the proposal (one among *pending, accepted, rejected*)
+- votersNumber : it is the number of voters needed to make the proposal validable
 
 
 ## submitProposal
 
-The function is used for submitting of new proposal to vote. It takes as input "requestorID, proposalID, proposalDescription, proposalType, proposalQuorum, proposalStatus, votersNumber"
+The function is used for submitting a new proposal to vote. It takes in input "requestorID, proposalID, proposalDescription, proposalType, proposalQuorum, proposalStatus, votersNumber"
 
-An example of the invoke for it is :
+By reluing on the Service Ledger *invoke* API, the correponding invocation is as follows:
 
     {
     "channel": "sunfish-channel",
@@ -36,10 +36,9 @@ An example of the invoke for it is :
 
 ## getProposal
 
-The function returns detail about the corresponding proposal taken as input "proposalID".
+The function returns detail about the corresponding proposal taken as input "proposalID" (which must corresponds to an existing proposal)
 
-An example instance of the invoke for it is :
-
+The corresponding *invoke* call is as follows
     {
     "channel": "sunfish-channel",
     "peer": "peer01",
@@ -52,10 +51,9 @@ An example instance of the invoke for it is :
 
 ## vote
 
-The function to vote a proposal. It takes as input "memberID, proposalID, vote"
+The function to vote---"accept" or "reject"---a proposal. It takes as input "memberID, proposalID, vote"
 
-An example instance of the invoke for it is :
-
+The corresponding *invoke* call is as follows
     {
     "channel": "sunfish-channel",
     "peer": "peer01",
@@ -70,10 +68,9 @@ An example instance of the invoke for it is :
 
 ## countVote
 
-The function starts the validation process of a proposal. It takes as input "proposalID".
+The function triggers the validation process for a proposal. It takes as input "proposalID".
 
-An example of the invoke for it is :
-
+The corresponding *invoke* call is as follows
     {
     "channel": "sunfish-channel",
     "peer": "peer01",
