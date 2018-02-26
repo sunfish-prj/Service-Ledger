@@ -20,11 +20,11 @@ An example of the invoke for it is :
 
     {
     "channel": "sunfish-channel",
-    "peer": "string",
+    "peer": "peer01",
     "chaincodeName": "governance.go",
     "fcn": "submitProposal",
     "args": [
-        "peer01",
+        "member01",
         "proposal01",
         "this is a test proposal description",
         "join",
@@ -42,7 +42,7 @@ An example instance of the invoke for it is :
 
     {
     "channel": "sunfish-channel",
-    "peer": "string",
+    "peer": "peer01",
     "chaincodeName": "governance.go",
     "fcn": "getProposal",
     "args": [
@@ -58,11 +58,11 @@ An example instance of the invoke for it is :
 
     {
     "channel": "sunfish-channel",
-    "peer": "string",
+    "peer": "peer01",
     "chaincodeName": "governance.go",
     "fcn": "vote",
     "args": [
-        "peer01",
+        "member01",
         "proposal01",
         "accept"
         ]
@@ -76,7 +76,7 @@ An example of the invoke for it is :
 
     {
     "channel": "sunfish-channel",
-    "peer": "string",
+    "peer": "peer01",
     "chaincodeName": "governance.go",
     "fcn": "countVote",
     "args": [
