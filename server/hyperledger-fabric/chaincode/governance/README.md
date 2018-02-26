@@ -8,7 +8,7 @@ The chain-code support four different function in order to achieve a voting sess
 - proposalDescription : it is the description of the proposal
 - proposalType : this field represent the proposal typology (e.g. join, leave, update)
 - proposalQuorum : the typology of the quorum is needed to validate the proposal
-- proposalStatus : this is the current status of the proposal 
+- proposalStatus : this is the current status of the proposal (e.g. pending, accepted, rejected)
 - votersNumber : this is the number of voters needed to make the proposal validable
 
 
