@@ -7,16 +7,17 @@ The chain-code support four different function in order to achieve a voting sess
 - proposalID : it is the ID of the proposal
 - proposalDescription : it is the description of the proposal
 - proposalType : it represents the proposal typology (one among *join, leave, update*)
-- proposalQuorum : the type of quorum needed to validate the proposal (i.e. ...)
+- proposalQuorum : the type of quorum needed to validate the proposal (one among *unanimity*,*majority*, *onethird*)
 - proposalStatus : it is the current status of the proposal (one among *pending, accepted, rejected*)
-- votersNumber : it is the number of voters needed to make the proposal validable
+- votersNumber : it is the minimum number of voters that makes the votation valid
+- vote: it is the vote on a proposal expressed by a member (either *accept* or *reject*)
 
 
 ## submitProposal
 
 The function is used for submitting a new proposal to vote. It takes in input "requestorID, proposalID, proposalDescription, proposalType, proposalQuorum, proposalStatus, votersNumber"
 
-By reluing on the Service Ledger *invoke* API, the correponding invocation is as follows:
+By relying on the Service Ledger *invoke* API, the correponding invocation is as follows:
 
     {
     "channel": "sunfish-channel",
