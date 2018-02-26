@@ -12,7 +12,7 @@ The chain-code support four different function in order to achieve a voting sess
 - votersNumber : this is the number of voters needed to make the proposal validable
 
 
-##submitProposal
+## submitProposal
 
 The function is used for submitting of new proposal to vote. It takes as input "requestorID, proposalID, proposalDescription, proposalType, proposalQuorum, proposalStatus, votersNumber"
 
@@ -34,7 +34,7 @@ An example of the invoke for it is :
         ]
     } 
 
-##getProposal
+## getProposal
 
 The function returns detail about the corresponding proposal taken as input "proposalID".
 
@@ -50,7 +50,7 @@ An example instance of the invoke for it is :
         ]
     } 
 
-##vote
+## vote
 
 The function to vote a proposal. It takes as input "memberID, proposalID, vote"
 
@@ -68,7 +68,7 @@ An example instance of the invoke for it is :
         ]
     } 
 
-##countVote
+## countVote
 
 The function starts the validation process of a proposal. It takes as input "proposalID".
 
