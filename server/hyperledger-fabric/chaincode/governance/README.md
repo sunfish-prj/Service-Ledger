@@ -1,1 +1,1 @@
-Desription of the function invocation in the chaincode
+Description of the function invocation in the chaincode
