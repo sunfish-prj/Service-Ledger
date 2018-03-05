@@ -44,6 +44,14 @@ exports.invokePOST = function(args, res, next) {
     		  res.end(JSON.stringify({'message': 'error'}));
       }
     });
-  }
+  } else { 
+		
+		console.log("[ExecService.js] Argument recevied: "); 
+		console.log(args.invokeSpec.value);
+		
+  	console.log("[ExecService.js] Mongo was chosen - NO INVOKE possible!");
+    res.writeHead(400,{'Content-Type':'application/json'});
+	  res.end(JSON.stringify({'message': 'Mongo does not support INVOKE'}));
+	}
 
 }
