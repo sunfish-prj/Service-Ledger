@@ -145,11 +145,14 @@ function _invoke (myobj, callback){
 		
 				//clean results
 				var string_data = data.toString();
-				var response_res = string_data.substr(string_data.indexOf('response:'), 100);
+				var response_res = string_data.substr(string_data.indexOf('response:'), 1000);
+                console.log('[hl_utils.js] response: ' + response_res);
+
 				response_res = response_res.replace(/\"/g, "");
+				response_res = response_res.replace(/\\/g, "'");
 				
 				//kind of response checking 
-				response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "");
+				response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "").replace("\\","");
 				// GET
 				/*if ( response_res.includes("payload") ) {
 					response_res = response_res.split('payload:')[1];
@@ -164,7 +167,7 @@ function _invoke (myobj, callback){
 			
 			})
 			
-		})}, 2000);
+		})}, 5000);
 
 }
 
@@ -243,7 +246,7 @@ function _get (myobj, callback){
 			
 			})
 			
-		})}, 2000);
+		})}, 5000);
 	
 }
 

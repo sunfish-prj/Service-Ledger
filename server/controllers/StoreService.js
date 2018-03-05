@@ -142,15 +142,11 @@ exports.getKeysPOST = function(args, res, next) {
 //     "keyId" : "aeiou"
 //   } ]
 // };
-
-  console.log("CIAO");
-
+  
   // TODO ??
 
   var response = {};
   var key = args.body.value;
-
-  console.log("arguments to store: " + keyPair);
 
   if (out_service_name == 'mongo') {
     console.log("Calling mongo - get");
@@ -175,7 +171,8 @@ exports.getKeysPOST = function(args, res, next) {
     console.log("Calling hyperledger");
 
     console.log("Calling api to 'get' in the keyValueStore chaincode...");
-    hl_utils.hl_get(key, function (result) {
+    
+	/*hl_utils.hl_get(key, function (result) {
       if (Object.keys(result).length > 0) {
         console.log(result);
         res.writeHead(200,{'Content-Type':'application/json'});
@@ -186,6 +183,22 @@ exports.getKeysPOST = function(args, res, next) {
       } else {
         res.writeHead(400,{'Content-Type':'application/json'});
         res.end(JSON.stringify({'message': 'error'}));
+      }
+    });
+	*/
+	
+	var payload = {fcn:"getAll", args:"\"\",\"\"", peer:"0"};
+	
+	hl_utils.hl_invoke(payload, function (result) {
+      if (Object.keys(result).length > 0) {
+        res.writeHead(200,{'Content-Type':'application/json'});
+        response['application/json'] = {
+          "message" : result
+         };
+        res.end(JSON.stringify(response[Object.keys(response)[0]] || {}, null, 2));
+      } else {
+          res.writeHead(400,{'Content-Type':'application/json'});
+    		  res.end(JSON.stringify({'message': 'error'}));
       }
     });
 
