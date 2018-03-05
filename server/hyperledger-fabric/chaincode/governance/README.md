@@ -40,6 +40,7 @@ By relying on the Service Ledger *invoke* API, the correponding invocation is as
 The function returns detail about the corresponding proposal taken as input "proposalID" (which must corresponds to an existing proposal)
 
 The corresponding *invoke* call is as follows
+
     {
     "channel": "sunfish-channel",
     "peer": "peer01",
@@ -55,6 +56,7 @@ The corresponding *invoke* call is as follows
 The function to vote---"accept" or "reject"---a proposal. It takes as input "memberID, proposalID, vote"
 
 The corresponding *invoke* call is as follows
+
     {
     "channel": "sunfish-channel",
     "peer": "peer01",
@@ -72,6 +74,7 @@ The corresponding *invoke* call is as follows
 The function triggers the validation process for a proposal. It takes as input "proposalID".
 
 The corresponding *invoke* call is as follows
+
     {
     "channel": "sunfish-channel",
     "peer": "peer01",
