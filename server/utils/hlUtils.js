@@ -156,7 +156,7 @@ function _invoke (myobj, callback){
 					response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "").replace("\\","");
 				}
 				catch(err) {
-					response_res = "NULL";
+					response_res = "status:200 message:OK";
 				}	
 				
 				// GET
