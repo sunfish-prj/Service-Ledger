@@ -152,7 +152,13 @@ function _invoke (myobj, callback){
 				response_res = response_res.replace(/\\/g, "'");
 				
 				//kind of response checking 
-				response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "").replace("\\","");
+				try {
+					response_res = response_res.split("response:<")[1].split(" >")[0].replace("\"", "").replace("\\","");
+				}
+				catch(err) {
+					response_res = "NULL";
+				}	
+				
 				// GET
 				/*if ( response_res.includes("payload") ) {
 					response_res = response_res.split('payload:')[1];
@@ -161,7 +167,7 @@ function _invoke (myobj, callback){
 					response_res = response_res.split("message:")[1];
 				}*/
 				if ( !response_res.includes("payload") ) {
-					response_res = response_res + ' payload:NULL'
+					response_res = response_res + ' payload:NULL';
 				}
 				return callback(response_res);
 			
