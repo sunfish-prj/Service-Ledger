@@ -370,7 +370,7 @@ func (t *SimpleChaincode) countVote(stub shim.ChaincodeStubInterface, args []str
 			}
 		} else {
 			fmt.Printf("\033[1;36m[E-VOTING CHAINCODE][CountVote] Some votes left!\033[0m\n")
-			return shim.Success(nil)
+			return shim.Success([]byte(proposal.ProposalStatus))
 		}
 	case proposal.ProposalQuorum == "majority":
 		if acceptCounter+rejectCounter >= voterInt {
@@ -381,7 +381,7 @@ func (t *SimpleChaincode) countVote(stub shim.ChaincodeStubInterface, args []str
 			}
 		} else {
 			fmt.Printf("\033[1;36m[E-VOTING CHAINCODE][CountVote] Some votes left!\033[0m\n")
-			return shim.Success(nil)
+			return shim.Success([]byte(proposal.ProposalStatus))
 		}
 	case proposal.ProposalQuorum == "oneThird":
 		if acceptCounter+rejectCounter >= voterInt {
@@ -392,7 +392,7 @@ func (t *SimpleChaincode) countVote(stub shim.ChaincodeStubInterface, args []str
 			}
 		} else {
 			fmt.Printf("\033[1;36m[E-VOTING CHAINCODE][CountVote] Some votes left!\033[0m\n")
-			return shim.Success(nil)
+			return shim.Success([]byte(proposal.ProposalStatus))
 		}
 	}
 	fmt.Printf("[E-VOTING CHAINCODE][CountVote] Counted \"accept\" votes: %d \n", acceptCounter)
@@ -411,7 +411,7 @@ func (t *SimpleChaincode) countVote(stub shim.ChaincodeStubInterface, args []str
 		return shim.Error(err.Error())
 	}
 	fmt.Printf("\033[1;36m[E-VOTING CHAINCODE][CountVote] Proposal validation executed!\033[0m\n")
-	return shim.Success(nil)
+	return shim.Success([]byte(proposal.ProposalStatus))
 
 	// #####################################################################################
 
